@@ -5,9 +5,9 @@ import { GameRepositoryImplements } from './infrastructure/game.repository.imple
 import { InjectionToken } from './application/injection.token';
 import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { GameCreateUpdateHandler } from './application/command/game.create-update/game.create-update.handler';
-import { GameInstancePaidHandler } from './application/event/game-instance.paid.handler';
+import { GameInstanceModule } from '../game-instance/game-instance.module';
 
-const application = [GameCreateUpdateHandler, GameInstancePaidHandler];
+const application = [GameCreateUpdateHandler];
 
 const infrastructure = [
   {
@@ -17,7 +17,7 @@ const infrastructure = [
 ];
 
 @Module({
-  imports: [CqrsModule, AuthorizationOnlyModule],
+  imports: [CqrsModule, AuthorizationOnlyModule, GameInstanceModule],
   providers: [...application, GameFactory, ...infrastructure],
 })
 export class GameModule {

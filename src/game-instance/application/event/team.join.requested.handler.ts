@@ -25,7 +25,7 @@ export class TeamJoinRequestedHandler implements IEventHandler {
       teamId: event.teamId,
     });
     if (game.isFree) {
-      gameInstance.paid();
+      gameInstance.approve();
     }
     await this.repository.save(gameInstance);
     gameInstance.commit();

@@ -18,7 +18,10 @@ export class UserRegisterHandler
     const user = this.userFactory.create({
       id: command.id,
       phone: command.phone,
+      name: command.name,
     });
+    user.created();
     await this.userRepository.save(user);
+    user.commit();
   }
 }

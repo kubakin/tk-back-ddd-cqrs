@@ -2,38 +2,55 @@ import { UserRepository } from '../domain/user.repository';
 import { User } from '../domain/user.domain';
 import { UserFactory } from '../domain/user.factory';
 import { UserEntity } from './user.entity';
+import { writeConnection } from '../../../lib/db.module';
+import { UserDummyRepositoryInterface } from '../dummy/user.dummy.repository.interface';
+import { Like } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 
-const repository: UserEntity[] = [
-  { id: '1', phone: '+123' },
-  { id: '2', phone: '+223' },
-  { id: '3', phone: '+323' },
-  { id: '4', phone: '+423' },
-  { id: '5', phone: '+523' },
-];
-
-export class UserRepositoryImplements implements UserRepository {
+@Injectable()
+export class UserRepositoryImplements
+  implements UserRepository, UserDummyRepositoryInterface
+{
   constructor(private userFactory: UserFactory) {}
 
   async save(user: User) {
-    repository.push(this.modelToEntity(user));
-    console.log(repository);
+    const models = [user];
+    const entities = models.map((model) => this.modelToEntity(model));
+    await this.repository.save(entities);
+  }
+
+  async delete(user: User) {
+    const models = [user];
+    const entities = models.map((model) => this.modelToEntity(model));
+    await this.repository.remove(entities);
   }
 
   async findById(id: string) {
-    return this.entityToModel(repository.find((item) => item.id === id));
+    const entity = await this.repository.findOne({ where: { id } });
+    return this.entityToModel(entity);
   }
 
   async findAll() {
-    console.log('helol');
-    return repository.map((item) => this.entityToModel(item));
+    const entities = await this.repository.find();
+    return entities.map((it) => this.entityToModel(it));
+  }
+
+  async findDummyUsersIds() {
+    const entities = await this.repository.find({
+      where: { name: Like(`%dummy%`) },
+    });
+    return entities.map((it) => it.id);
   }
 
   private entityToModel(data: UserEntity): User {
-    return data as any;
     return this.userFactory.reconstitute(data);
   }
 
   private modelToEntity(data: any): UserEntity {
     return { ...data };
+  }
+
+  get repository() {
+    return writeConnection.manager.getRepository(UserEntity);
   }
 }

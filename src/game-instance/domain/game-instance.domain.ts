@@ -1,5 +1,6 @@
 import { AggregateRoot } from '@nestjs/cqrs';
-import { GameInstancePaidEvent } from './event/game-instance.paid.event';
+import { GameInstanceActivatedEvent } from './event/game-instance.activated.event';
+import { GameInstanceApprovedEvent } from './event/game-instance.approved.event';
 
 export type GameInstanceRequiredOptions = {
   id: string;
@@ -15,7 +16,7 @@ export type GameInstanceOptions = Required<GameInstanceRequiredOptions> &
   Partial<GameInstanceOptionalOptions>;
 
 export interface GameInstance {
-  paid: () => void;
+  approve: () => void;
   commit: () => void;
 }
 
@@ -25,10 +26,21 @@ export class GameInstanceDomain extends AggregateRoot implements GameInstance {
   teamId: string;
   status: string;
 
-  paid() {
-    this.status = 'PAID';
+  approve() {
+    this.status = 'APPROVED';
     this.apply(
-      new GameInstancePaidEvent({
+      new GameInstanceApprovedEvent({
+        id: this.id,
+        teamId: this.teamId,
+        gameId: this.gameId,
+      }),
+    );
+  }
+
+  activate() {
+    this.status = 'ACTIVATED';
+    this.apply(
+      new GameInstanceActivatedEvent({
         id: this.id,
         teamId: this.teamId,
         gameId: this.gameId,

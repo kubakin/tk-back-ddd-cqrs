@@ -4,7 +4,7 @@ import { AppGenericModule } from '../lib/app.generic.module';
 import { TeamModule } from './team/team.module';
 import { TaskModule } from './task/task.module';
 import { GameModule } from './game/game.module';
-import { GameInstanceModule } from './game-instance/game-instance.module';
+import { AttemptModule } from './attempts/attempt.module';
 
 @Module({
   imports: [
@@ -13,7 +13,7 @@ import { GameInstanceModule } from './game-instance/game-instance.module';
     TeamModule,
     TaskModule,
     GameModule,
-    GameInstanceModule,
+    AttemptModule,
   ],
   controllers: [],
   providers: [],

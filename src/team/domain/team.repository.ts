@@ -1,7 +1,8 @@
 import { Team } from './team.domain';
 
 export class TeamRepository {
-  save: (user: Team) => Promise<void>;
+  save: (team: Team) => Promise<void>;
+  delete: (team: Team) => Promise<void>;
   findById: (id: string) => Promise<Team | null>;
   findAll: () => Promise<Team[]>;
 }

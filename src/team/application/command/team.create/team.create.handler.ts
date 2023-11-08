@@ -15,11 +15,13 @@ export class TeamCreateHandler
   constructor(private teamFactory: TeamFactory) {}
 
   async execute(command: TeamCreateCommand): Promise<void> {
-    const user = this.teamFactory.create({
+    const team = this.teamFactory.create({
       id: command.id,
       name: command.name,
       userId: command.userId,
     });
-    await this.teamRepository.save(user);
+    team.created();
+    await this.teamRepository.save(team);
+    team.commit();
   }
 }

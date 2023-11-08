@@ -1,6 +1,6 @@
 import { TaskRepository } from '../domain/task.repository';
 import { TaskFactory } from '../domain/task.factory';
-import { Task } from '../domain/task.domain';
+import { HasTaskId, Task } from '../domain/task.domain';
 import { TaskEntity } from './task.entity';
 
 const repository: TaskEntity[] = [
@@ -22,6 +22,14 @@ export class TaskRepositoryImplements implements TaskRepository {
 
   async findById(id: string) {
     return this.entityToModel(repository.find((item) => item.id === id));
+  }
+
+  async findByTaskInstance(taskInstance: HasTaskId) {
+    return '' as any;
+  }
+
+  async findTaskByInstanceThatNeedBeAnswered(instance: HasTaskId) {
+    return '' as any;
   }
 
   async findAll() {

@@ -6,6 +6,12 @@ import { Type } from 'class-transformer';
 export class Configuration {
   @IsString()
   readonly DB_HOST = process.env.DB_HOST;
+  @IsString()
+  readonly DB_NAME = process.env.DB_NAME;
+  @IsString()
+  readonly DB_PASSWORD = process.env.DB_PASSWORD;
+  @IsString()
+  readonly DB_USER = process.env.DB_USER;
   @IsInt()
   @Type(() => Number)
   readonly DB_PORT = Number(process.env.DB_PORT);

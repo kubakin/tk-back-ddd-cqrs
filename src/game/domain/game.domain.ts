@@ -15,7 +15,12 @@ export type GameOptionalOptions = {
 export type GameOptions = Required<GameRequiredOptions> &
   Partial<GameOptionalOptions>;
 
-export interface Game {
+export interface GameParams {
+  taskStrategy: string;
+  id: string;
+}
+
+export interface Game extends GameParams {
   isFree: boolean;
   delete: () => void;
   distribute: (teamId: string) => void;
@@ -27,6 +32,7 @@ export class GameDomain extends AggregateRoot implements Game {
   name: string;
   disabled: boolean;
   deleted: boolean;
+  taskStrategy: string;
   cost: number;
 
   distribute(teamId: string) {

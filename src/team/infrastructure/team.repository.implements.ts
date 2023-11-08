@@ -2,60 +2,33 @@ import { TeamRepository } from '../domain/team.repository';
 import { Team } from '../domain/team.domain';
 import { TeamFactory } from '../domain/team.factory';
 import { TeamEntity } from './team.entity';
-import { generateString } from '@nestjs/typeorm';
+import { Injectable } from '@nestjs/common';
+import { writeConnection } from '../../../lib/db.module';
 
-const repository: TeamEntity[] = [
-  {
-    id: '1',
-    currentGameId: generateString(),
-    createdBy: generateString(),
-    createdAt: new Date(),
-    name: 'Team 1',
-  },
-  {
-    id: '2',
-    currentGameId: generateString(),
-    createdBy: generateString(),
-    createdAt: new Date(),
-    name: 'Team 2',
-  },
-  {
-    id: '3',
-    currentGameId: generateString(),
-    createdBy: generateString(),
-    createdAt: new Date(),
-    name: 'Team 3',
-  },
-  {
-    id: '4',
-    currentGameId: generateString(),
-    createdBy: generateString(),
-    createdAt: new Date(),
-    name: 'Team 4',
-  },
-  {
-    id: '5',
-    currentGameId: generateString(),
-    createdBy: generateString(),
-    createdAt: new Date(),
-    name: 'Team 5',
-  },
-];
-
+@Injectable()
 export class TeamRepositoryImplements implements TeamRepository {
   constructor(private teamFactory: TeamFactory) {}
 
   async save(team: Team) {
-    repository.push(this.modelToEntity(team));
-    console.log(repository);
+    const models = [team];
+    const entities = models.map((model) => this.modelToEntity(model));
+    await this.repository.save(entities);
   }
 
-  async findById(id: string) {
-    return this.entityToModel(repository.find((item) => item.id === id));
+  async delete(team: Team) {
+    const models = [team];
+    const entities = models.map((model) => this.modelToEntity(model));
+    await this.repository.remove(entities);
   }
 
   async findAll() {
-    return repository.map((item) => this.entityToModel(item));
+    const entities = await this.repository.find();
+    return entities.map((it) => this.entityToModel(it));
+  }
+
+  async findById(id: string) {
+    const entity = await this.repository.findOne({ where: { id } });
+    return this.entityToModel(entity);
   }
 
   private entityToModel(data: TeamEntity): Team {
@@ -64,5 +37,9 @@ export class TeamRepositoryImplements implements TeamRepository {
 
   private modelToEntity(data: any): TeamEntity {
     return { ...data };
+  }
+
+  get repository() {
+    return writeConnection.manager.getRepository(TeamEntity);
   }
 }

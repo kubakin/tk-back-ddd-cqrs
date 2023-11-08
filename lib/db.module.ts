@@ -15,6 +15,8 @@ import {
   SelectQueryBuilder,
 } from 'typeorm';
 import { Configuration } from '../src/config';
+import { UserEntity } from '../src/user/infrastructure/user.entity';
+import { TeamEntity } from '../src/team/infrastructure/team.entity';
 
 interface WriteConnection {
   readonly startTransaction: (
@@ -53,20 +55,20 @@ class DatabaseService implements OnApplicationBootstrap, OnModuleDestroy {
     this.configuration = new Configuration();
     this.dataSource = new DataSource({
       type: 'postgres',
-      entities: [],
+      entities: [UserEntity, TeamEntity],
       migrations: ['migrations/tk/*{.ts,.js}'],
       migrationsTableName: 'tk_migrations',
-      entityPrefix: 'hosting_',
+      entityPrefix: 'tk_',
       // migrationsRun: true,
       // namingStrategy: new SnakeNamingStrategy(),
-      migrationsRun: true,
+      // migrationsRun: true,
       logging: false,
-      synchronize: false,
+      synchronize: true,
       host: this.configuration.DB_HOST,
       port: this.configuration.DB_PORT,
-      database: 'app',
-      username: 'app',
-      password: 'secret',
+      database: this.configuration.DB_NAME,
+      username: this.configuration.DB_USER,
+      password: this.configuration.DB_PASSWORD,
     });
   }
 

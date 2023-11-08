@@ -17,7 +17,7 @@ export class TeamFactory {
       id: options.id,
       createdBy: options.userId,
       name: options.name,
-      createdAt: new Date(),
+      // createdAt: new Date(),
     });
   }
 

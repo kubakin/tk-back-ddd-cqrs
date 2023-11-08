@@ -2,6 +2,7 @@ import { ConfigModule } from '@nestjs/config';
 import { DynamicModule, Global, Module } from '@nestjs/common';
 import { Configuration } from '../src/config';
 import { ScheduleModule } from '@nestjs/schedule';
+import { DatabaseModule } from './db.module';
 
 @Global()
 @Module({})
@@ -16,7 +17,7 @@ export class AppGenericModule {
         ignoreEnvFile: process.env.DEV !== 'true',
       }),
     );
-    // modules.push(DatabaseModule.forRoot());
+    modules.push(DatabaseModule.forRoot());
     return modules;
   }
 

@@ -5,20 +5,28 @@ import { TeamRepositoryImplements } from './infrastructure/team.repository.imple
 import { InjectionToken } from './application/injection.token';
 import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { TeamCreateHandler } from './application/command/team.create/team.create.handler';
-import { TeamResolver } from './api/graphql/team.resolver';
+import { TeamDeleteHandler } from './application/command/team.delete/team.delete.handler';
+import { DummyUseCases } from './dummy/dummy.use-cases';
+import { TeamDummyRepositoryImplements } from './dummy/team.dummy.repository.implements';
 
-const application = [TeamCreateHandler];
+const application = [TeamCreateHandler, TeamDeleteHandler];
+
+const dummy = [DummyUseCases];
 
 const infrastructure = [
   {
     provide: InjectionToken.TeamRepository,
     useClass: TeamRepositoryImplements,
   },
+  {
+    provide: InjectionToken.TeamRepositoryDummy,
+    useClass: TeamDummyRepositoryImplements,
+  },
 ];
 
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule],
-  providers: [...application, TeamFactory, ...infrastructure, TeamResolver],
+  providers: [...application, TeamFactory, ...infrastructure, ...dummy],
 })
 export class TeamModule {
   constructor() {

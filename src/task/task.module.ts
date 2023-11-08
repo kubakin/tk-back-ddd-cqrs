@@ -5,9 +5,8 @@ import { TaskRepositoryImplements } from './infrastructure/task.repository.imple
 import { InjectionToken } from './application/injection.token';
 import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { TaskCreateHandler } from './application/command/task.create/task.create.handler';
-import { GameTaskDistributeRequestedHandler } from './application/event/game-task.distribute.requested.handler';
 
-const application = [TaskCreateHandler, GameTaskDistributeRequestedHandler];
+const application = [TaskCreateHandler];
 
 const infrastructure = [
   {

@@ -8,13 +8,18 @@ import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { UserLoginHandler } from './application/command/user.login/user.login.handler';
 import { UserJoinHandler } from './application/command/user.join/user.join.handler';
 import { UserLeaveHandler } from './application/command/user.leave/user.leave.handler';
+import { DummyUseCases } from './dummy/dummy.use-cases';
+import { UserDeleteHandler } from './application/command/user.delete/user.delete.handler';
 
 const application = [
   UserRegisterHandler,
   UserLoginHandler,
   UserJoinHandler,
   UserLeaveHandler,
+  UserDeleteHandler,
 ];
+
+const dummy = [DummyUseCases];
 
 const infrastructure = [
   {
@@ -29,7 +34,7 @@ const infrastructure = [
 
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule],
-  providers: [...application, UserFactory, ...infrastructure],
+  providers: [...application, UserFactory, ...infrastructure, ...dummy],
 })
 export class UserModule {
   constructor() {}
