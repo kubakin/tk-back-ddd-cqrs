@@ -13,13 +13,13 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    if (payload.userId) {
-      return { userId: payload.userId, roles: [Role.User] };
+  async validate(payload: { id: string; isAdmin: boolean }) {
+    if (!payload.isAdmin) {
+      return { userId: payload.id, roles: [Role.User] };
     }
 
-    if (payload.adminId) {
-      return { adminId: payload.adminId, roles: payload.roles };
+    if (payload.isAdmin) {
+      return { adminId: payload.id, roles: [Role.Admin] };
     }
 
     throw Error('Bad JWT Token');

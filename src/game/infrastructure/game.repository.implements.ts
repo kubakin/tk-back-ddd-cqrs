@@ -2,31 +2,31 @@ import { GameRepository } from '../domain/game.repository';
 import { Game } from '../domain/game.domain';
 import { GameFactory } from '../domain/game.factory';
 import { GameEntity } from './game.entity';
-
-const repository: GameEntity[] = [
-  {
-    id: '1',
-    name: 'Game 1',
-    cost: 300,
-    deleted: false,
-    disabled: false,
-  },
-];
+import { writeConnection } from '../../../lib/db.module';
 
 export class GameRepositoryImplements implements GameRepository {
   constructor(private gameFactory: GameFactory) {}
 
-  async save(team: Game) {
-    repository.push(this.modelToEntity(team));
-    console.log(repository);
+  async save(game: Game) {
+    const models = [game];
+    const entities = models.map((model) => this.modelToEntity(model));
+    await this.repository.save(entities);
+  }
+
+  async delete(game: Game) {
+    const models = [game];
+    const entities = models.map((model) => this.modelToEntity(model));
+    await this.repository.remove(entities);
   }
 
   async findById(id: string) {
-    return this.entityToModel(repository.find((item) => item.id === id));
+    const entity = await this.repository.findOne({ where: { id } });
+    return this.entityToModel(entity);
   }
 
   async findAll() {
-    return repository.map((item) => this.entityToModel(item));
+    const entities = await this.repository.find();
+    return entities.map((it) => this.entityToModel(it));
   }
 
   private entityToModel(data: GameEntity): Game {
@@ -35,5 +35,9 @@ export class GameRepositoryImplements implements GameRepository {
 
   private modelToEntity(data: any): GameEntity {
     return { ...data };
+  }
+
+  get repository() {
+    return writeConnection.manager.getRepository(GameEntity);
   }
 }

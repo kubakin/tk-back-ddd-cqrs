@@ -4,6 +4,7 @@ import { generateString } from '@nestjs/typeorm';
 import { HasId } from '../../common/interfaces/has-id.interface';
 import { SendAttemptRequestedEvent } from './event/send.attempt.requested.event';
 import { Logger } from '@nestjs/common';
+import { TeamDeletedEvent } from './event/team.deleted.event';
 
 export type TeamRequiredOptions = {
   id: string;
@@ -37,6 +38,7 @@ export class TeamDomain extends AggregateRoot implements Team {
 
   deleted() {
     this.logger.debug('Deleted');
+    this.apply(new TeamDeletedEvent({ id: this.id }));
   }
 
   sendAttempt(taskInstanceId: string, answer: string, userId: string) {

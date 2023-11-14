@@ -13,7 +13,7 @@ export class UserLeaveHandler
 
   async execute(command: UserLeaveCommand): Promise<void> {
     const user = await this.userRepository.findById(command.id);
-    user.join(command.teamId);
+    user.leave();
     await this.userRepository.save(user);
   }
 }

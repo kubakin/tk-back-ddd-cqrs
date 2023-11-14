@@ -6,8 +6,11 @@ import { InjectionToken } from './application/injection.token';
 import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { TeamJoinRequestedHandler } from './application/event/team.join.requested.handler';
 import { GameRepositoryImplements } from '../game/infrastructure/game.repository.implements';
+import { GamesProgressHandler } from './application/query/games.progress/games.progress.handler';
+import { GameInstanceQueryImplements } from './infrastructure/game-instance.query.implements';
+import { GameInstanceAdminController } from './api/game-instance.admin.controller';
 
-const application = [TeamJoinRequestedHandler];
+const application = [TeamJoinRequestedHandler, GamesProgressHandler];
 
 const infrastructure = [
   {
@@ -18,11 +21,16 @@ const infrastructure = [
     provide: InjectionToken.GameInstance,
     useClass: GameRepositoryImplements,
   },
+  {
+    provide: InjectionToken.GameInstanceQuery,
+    useClass: GameInstanceQueryImplements,
+  },
 ];
 
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule],
   providers: [...application, GameInstanceFactory, ...infrastructure],
+  controllers: [GameInstanceAdminController],
 })
 export class GameInstanceModule {
   constructor() {

@@ -17,6 +17,8 @@ import {
 import { Configuration } from '../src/config';
 import { UserEntity } from '../src/user/infrastructure/user.entity';
 import { TeamEntity } from '../src/team/infrastructure/team.entity';
+import { GameEntity } from '../src/game/infrastructure/game.entity';
+import { GameInstanceEntity } from '../src/game-instance/infrastructure/game-instance.entity';
 
 interface WriteConnection {
   readonly startTransaction: (
@@ -55,7 +57,7 @@ class DatabaseService implements OnApplicationBootstrap, OnModuleDestroy {
     this.configuration = new Configuration();
     this.dataSource = new DataSource({
       type: 'postgres',
-      entities: [UserEntity, TeamEntity],
+      entities: [UserEntity, TeamEntity, GameEntity, GameInstanceEntity],
       migrations: ['migrations/tk/*{.ts,.js}'],
       migrationsTableName: 'tk_migrations',
       entityPrefix: 'tk_',

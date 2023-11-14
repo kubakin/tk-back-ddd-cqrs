@@ -5,6 +5,7 @@ import { TeamModule } from './team/team.module';
 import { TaskModule } from './task/task.module';
 import { GameModule } from './game/game.module';
 import { AttemptModule } from './attempts/attempt.module';
+import { TestModule } from './tests/test.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { AttemptModule } from './attempts/attempt.module';
     TaskModule,
     GameModule,
     AttemptModule,
+    TestModule,
   ],
   controllers: [],
   providers: [],

@@ -9,4 +9,6 @@ export class UserEntity extends BaseEntity {
   phone: string;
   @Column({ nullable: true })
   name: string;
+  @Column({ nullable: true })
+  teamId: string;
 }

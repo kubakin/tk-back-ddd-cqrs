@@ -1,15 +1,20 @@
-import { AggregateRoot } from '@nestjs/cqrs';
 import { GameTaskDistributeRequestedEvent } from './event/game-task.distribute.requested.event';
+import { BaseDomain } from '../../common/base/base.domain';
 
 export type GameRequiredOptions = {
   id: string;
   name: string;
-  disabled: boolean;
-  cost: number;
+  taskStrategy: string;
+  duration: number;
 };
 
 export type GameOptionalOptions = {
   description: string;
+  hidden: boolean;
+  rulesImgUrl: string;
+  logoUrl: string;
+  personLimit: number;
+  cost: number;
 };
 
 export type GameOptions = Required<GameRequiredOptions> &
@@ -22,18 +27,22 @@ export interface GameParams {
 
 export interface Game extends GameParams {
   isFree: boolean;
-  delete: () => void;
   distribute: (teamId: string) => void;
   commit: () => void;
+  update: (data: Partial<GameDomain>) => void;
 }
 
-export class GameDomain extends AggregateRoot implements Game {
+export class GameDomain extends BaseDomain implements Game {
   id: string;
   name: string;
-  disabled: boolean;
-  deleted: boolean;
+  hidden: boolean;
   taskStrategy: string;
   cost: number;
+  rulesImgUrl: string;
+  logoUrl: string;
+  personLimit: number;
+  duration: number;
+  description: string;
 
   distribute(teamId: string) {
     this.apply(
@@ -45,7 +54,7 @@ export class GameDomain extends AggregateRoot implements Game {
     return this.cost === 0;
   }
 
-  delete() {
-    this.deleted = true;
+  update(data: Partial<GameDomain>) {
+    Object.assign(this, data);
   }
 }

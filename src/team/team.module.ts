@@ -8,6 +8,7 @@ import { TeamCreateHandler } from './application/command/team.create/team.create
 import { TeamDeleteHandler } from './application/command/team.delete/team.delete.handler';
 import { DummyUseCases } from './dummy/dummy.use-cases';
 import { TeamDummyRepositoryImplements } from './dummy/team.dummy.repository.implements';
+import { TeamController } from './api/team.controller';
 
 const application = [TeamCreateHandler, TeamDeleteHandler];
 
@@ -26,7 +27,8 @@ const infrastructure = [
 
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule],
-  providers: [...application, TeamFactory, ...infrastructure, ...dummy],
+  providers: [...application, TeamFactory, ...infrastructure],
+  controllers: [TeamController],
 })
 export class TeamModule {
   constructor() {

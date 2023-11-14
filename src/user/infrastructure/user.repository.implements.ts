@@ -6,6 +6,7 @@ import { writeConnection } from '../../../lib/db.module';
 import { UserDummyRepositoryInterface } from '../dummy/user.dummy.repository.interface';
 import { Like } from 'typeorm';
 import { Injectable } from '@nestjs/common';
+import { AuthData } from '../../../lib/authorization/src/api/auth-data-provider';
 
 @Injectable()
 export class UserRepositoryImplements
@@ -23,6 +24,24 @@ export class UserRepositoryImplements
     const models = [user];
     const entities = models.map((model) => this.modelToEntity(model));
     await this.repository.remove(entities);
+  }
+
+  async provideById(id: string): Promise<AuthData> {
+    const entity = await this.repository.findOneBy({ id });
+    return {
+      id: entity.id,
+      isAdmin: false,
+      phone: entity.phone,
+    };
+  }
+
+  async provideByPhone(phone: string): Promise<AuthData> {
+    const entity = await this.repository.findOneBy({ phone });
+    return {
+      id: entity.id,
+      isAdmin: false,
+      phone: entity.phone,
+    };
   }
 
   async findById(id: string) {

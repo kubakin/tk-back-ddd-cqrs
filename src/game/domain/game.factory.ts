@@ -5,8 +5,14 @@ import { EventPublisher } from '@nestjs/cqrs';
 interface CreateGameOptions {
   id: string;
   name: string;
-  disabled: boolean;
-  cost: number;
+  hidden?: boolean;
+  taskStrategy: string;
+  cost?: number;
+  rulesImgUrl: string;
+  logoUrl: string;
+  personLimit: number;
+  duration: number;
+  description?: string;
 }
 
 @Injectable()
@@ -18,7 +24,12 @@ export class GameFactory {
       id: options.id,
       name: options.name,
       cost: options.cost,
-      disabled: options.disabled,
+      hidden: !!options.hidden,
+      duration: options.duration,
+      rulesImgUrl: options.rulesImgUrl,
+      description: options.description,
+      personLimit: options.personLimit,
+      taskStrategy: options.taskStrategy,
     });
   }
 
