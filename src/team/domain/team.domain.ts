@@ -1,10 +1,10 @@
-import { AggregateRoot } from '@nestjs/cqrs';
 import { TeamJoinRequestedEvent } from './event/team.join.requested.event';
 import { generateString } from '@nestjs/typeorm';
 import { HasId } from '../../common/interfaces/has-id.interface';
 import { SendAttemptRequestedEvent } from './event/send.attempt.requested.event';
 import { Logger } from '@nestjs/common';
 import { TeamDeletedEvent } from './event/team.deleted.event';
+import { BaseDomain } from '../../common/base/base.domain';
 
 export type TeamRequiredOptions = {
   id: string;
@@ -13,7 +13,9 @@ export type TeamRequiredOptions = {
 };
 
 export type TeamOptionalOptions = {
-  currentGameId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  currentSessionId: string;
 };
 
 export type TeamOptions = Required<TeamRequiredOptions> &
@@ -24,13 +26,14 @@ export interface Team extends HasId {
   created: () => void;
   deleted: () => void;
   commit: () => void;
+  changeCurrentSession: (instanceId: string) => void;
 }
 
-export class TeamDomain extends AggregateRoot implements Team {
+export class TeamDomain extends BaseDomain implements Team {
   id: string;
   name: string;
+  currentSessionId: string;
   createdBy: string;
-  currentGameId?: string;
 
   created() {
     this.logger.debug('Created');
@@ -47,7 +50,6 @@ export class TeamDomain extends AggregateRoot implements Team {
         teamId: this.id,
         userId,
         answer: answer,
-        currentGameId: this.currentGameId,
         taskInstanceId,
       }),
     );
@@ -61,6 +63,10 @@ export class TeamDomain extends AggregateRoot implements Team {
         gameId,
       }),
     );
+  }
+
+  changeCurrentSession(instanceId: string) {
+    this.currentSessionId = instanceId;
   }
 
   get logger() {

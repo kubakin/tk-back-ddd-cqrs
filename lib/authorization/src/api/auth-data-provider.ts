@@ -2,6 +2,7 @@ export interface AuthData {
   id: string;
   phone: string;
   isAdmin: boolean;
+  password?: string;
 }
 
 export const AUTH_DATA_PROVIDER = 'AUTH_DATA_PROVIDER';

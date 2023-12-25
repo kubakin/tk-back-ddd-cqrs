@@ -1,5 +1,4 @@
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
-import { GameInstanceFactory } from '../../domain/game-instance.factory';
 import { Inject } from '@nestjs/common';
 import { GameInstanceRepository } from '../../domain/game-instance.repository';
 import { GameRepository } from '../../../game/domain/game.repository';
@@ -12,6 +11,7 @@ import { TaskRepository } from '../../../task/domain/task.repository';
 import { TaskInstanceRepository } from '../../../task-instance/domain/task-instance.repository';
 import { GameParams } from '../../../game/domain/game.domain';
 import { TaskInstanceFactory } from '../../../task-instance/domain/task-instance.factory';
+import { generateString } from '@nestjs/typeorm';
 
 @EventsHandler(GameInstanceApprovedEvent)
 export class InstanceApprovedHandler
@@ -29,15 +29,17 @@ export class InstanceApprovedHandler
   @Inject(TaskInstanceInjectionToken.TaskInstanceRepository)
   taskInstanceRepository: TaskInstanceRepository;
 
-  constructor(
-    private factory: GameInstanceFactory,
-    private taskInstanceFactory: TaskInstanceFactory,
-  ) {}
+  constructor(private taskInstanceFactory: TaskInstanceFactory) {}
 
   async handle(event: GameInstanceApprovedEvent): Promise<void> {
     const gameInstance = await this.repository.findById(event.id);
     const game = await this.gameRepository.findById(event.gameId);
     await this.distributeByStrategy(game, event.id);
+    if (game.startImmediate) {
+      gameInstance.start();
+      await this.repository.save(gameInstance);
+      gameInstance.commit();
+    }
   }
 
   async distributeByStrategy(strategy: GameParams, gameInstanceId: string) {
@@ -45,7 +47,7 @@ export class InstanceApprovedHandler
       case 'RANDOM':
         await this.randomStrategy(strategy, gameInstanceId);
         return;
-      case 'DEFAULT_ORDER':
+      case 'DEFAULT':
         await this.defaultStrategy(strategy, gameInstanceId);
         return;
     }
@@ -59,7 +61,7 @@ export class InstanceApprovedHandler
           gameInstanceId,
           taskId: task.id,
           order: 123,
-          id: '1',
+          id: generateString(),
         });
         await this.taskInstanceRepository.save(taskInstance);
       }),
@@ -74,7 +76,7 @@ export class InstanceApprovedHandler
           gameInstanceId,
           taskId: task.id,
           order: task.defaultOrder,
-          id: '1',
+          id: generateString(),
         });
         await this.taskInstanceRepository.save(taskInstance);
       }),

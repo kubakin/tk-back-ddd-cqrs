@@ -2,16 +2,17 @@ import { TeamJoinRequestedEvent } from '../../../team/domain/event/team.join.req
 import { EventsHandler, IEventHandler } from '@nestjs/cqrs';
 import { GameInstanceFactory } from '../../domain/game-instance.factory';
 import { Inject } from '@nestjs/common';
-import { InjectionToken } from '../injection.token';
 import { GameInstanceRepository } from '../../domain/game-instance.repository';
 import { GameRepository } from '../../../game/domain/game.repository';
+import { InjectionToken as GameInjectionToken } from '../../../game/application/injection.token';
+import { InjectionToken } from '../injection.token';
 
 @EventsHandler(TeamJoinRequestedEvent)
 export class TeamJoinRequestedHandler implements IEventHandler {
   @Inject(InjectionToken.GameInstanceRepository)
   repository: GameInstanceRepository;
 
-  @Inject(InjectionToken.GameInstance)
+  @Inject(GameInjectionToken.GameRepository)
   gameRepository: GameRepository;
 
   constructor(private factory: GameInstanceFactory) {}
@@ -24,10 +25,12 @@ export class TeamJoinRequestedHandler implements IEventHandler {
       gameId: event.gameId,
       teamId: event.teamId,
     });
-    if (game.isFree) {
-      gameInstance.approve();
-    }
+
     await this.repository.save(gameInstance);
+    if (game.isFree) {
+      game.distribute(event.id);
+      game.commit();
+    }
     gameInstance.commit();
   }
 }

@@ -9,6 +9,8 @@ import {
   UserTeam,
 } from '../application/query/user.list/user.list.result';
 import { TeamEntity } from '../../team/infrastructure/team.entity';
+import { MeQuery } from '../application/query/me/me.query';
+import { MeResult } from '../application/query/me/me.result';
 
 @Injectable()
 export class UserQueryImplements implements UserQuery {
@@ -24,6 +26,17 @@ export class UserQueryImplements implements UserQuery {
       }),
     );
     return { data: users };
+  }
+
+  async me(query: MeQuery): Promise<MeResult> {
+    const rs = await this.userRepo.findOne({ where: { id: query.userId } });
+    console.log(rs);
+
+    return {
+      id: rs.id,
+      phone: rs.phone,
+      team: await this.team(rs.teamId),
+    };
   }
 
   get userRepo() {

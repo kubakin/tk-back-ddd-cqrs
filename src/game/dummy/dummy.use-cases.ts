@@ -14,6 +14,7 @@ export class DummyUseCases {
   constructor(private commandBus: CommandBus) {}
 
   async onApplicationBootstrap() {
+    return;
     this.logger.debug('Prepare dummy mode');
     setTimeout(() => {
       this.main();

@@ -10,5 +10,5 @@ export class TeamEntity extends BaseEntity {
   @Column()
   createdBy: string;
   @Column({ nullable: true })
-  currentGameId?: string;
+  currentSessionId?: string;
 }

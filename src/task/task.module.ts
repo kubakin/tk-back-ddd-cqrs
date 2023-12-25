@@ -18,6 +18,7 @@ const infrastructure = [
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule],
   providers: [...application, TaskFactory, ...infrastructure],
+  exports: [...infrastructure, TaskFactory],
 })
 export class TaskModule {
   constructor() {

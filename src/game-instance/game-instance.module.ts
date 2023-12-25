@@ -5,12 +5,15 @@ import { GameInstanceRepositoryImplements } from './infrastructure/game-instance
 import { InjectionToken } from './application/injection.token';
 import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { TeamJoinRequestedHandler } from './application/event/team.join.requested.handler';
-import { GameRepositoryImplements } from '../game/infrastructure/game.repository.implements';
-import { GamesProgressHandler } from './application/query/games.progress/games.progress.handler';
 import { GameInstanceQueryImplements } from './infrastructure/game-instance.query.implements';
 import { GameInstanceAdminController } from './api/game-instance.admin.controller';
+import { GameFactory } from '../game/domain/game.factory';
+import { GameModule } from '../game/game.module';
+import { GameInstanceListHandler } from './application/query/game.instance.list/game.instance.list.handler';
+import { UserGameInstanceResolver } from './api/user/game-instance.resolver';
+import { RepoProvider } from '../common/repo.provider';
 
-const application = [TeamJoinRequestedHandler, GamesProgressHandler];
+const application = [TeamJoinRequestedHandler, GameInstanceListHandler];
 
 const infrastructure = [
   {
@@ -18,18 +21,23 @@ const infrastructure = [
     useClass: GameInstanceRepositoryImplements,
   },
   {
-    provide: InjectionToken.GameInstance,
-    useClass: GameRepositoryImplements,
-  },
-  {
     provide: InjectionToken.GameInstanceQuery,
     useClass: GameInstanceQueryImplements,
   },
 ];
 
+const resolvers = [UserGameInstanceResolver];
+
 @Module({
-  imports: [CqrsModule, AuthorizationOnlyModule],
-  providers: [...application, GameInstanceFactory, ...infrastructure],
+  imports: [CqrsModule, AuthorizationOnlyModule, GameModule],
+  providers: [
+    ...application,
+    GameInstanceFactory,
+    ...infrastructure,
+    GameFactory,
+    ...resolvers,
+    RepoProvider,
+  ],
   controllers: [GameInstanceAdminController],
 })
 export class GameInstanceModule {

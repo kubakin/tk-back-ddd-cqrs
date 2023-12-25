@@ -19,12 +19,21 @@ export class TaskInstanceFactory {
       gameInstanceId: options.gameInstanceId,
       taskId: options.taskId,
       order: options.order,
+      startedAt: null,
+      status: 'CREATED',
+      createdAt: new Date(),
+      answeredBy: null,
+      answeredAt: null,
+      helpStatus: 0,
     });
   }
 
   reconstitute(options: Partial<TaskInstanceDomain>): TaskInstance {
     return this.eventPublisher.mergeObjectContext(
-      Object.assign(new TaskInstanceDomain(), options),
+      Object.assign(new TaskInstanceDomain(), {
+        ...options,
+        updatedAt: new Date(),
+      }),
     );
   }
 }

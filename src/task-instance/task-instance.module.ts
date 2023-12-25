@@ -4,8 +4,11 @@ import { InjectionToken } from './application/injection.token';
 import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { TaskInstanceRepositoryImplements } from './infrastructure/task-instance.repository.implements';
 import { TaskInstanceFactory } from './domain/task-instance.factory';
+import { TaskModule } from '../task/task.module';
+import { AttemptCreatedHandler } from './application/event/attempt.created.handler';
+import { TasksDistributeRequestedHandler } from './application/event/tasks.distribute.requested.handler';
 
-const application = [];
+const application = [AttemptCreatedHandler, TasksDistributeRequestedHandler];
 
 const infrastructure = [
   {
@@ -15,7 +18,7 @@ const infrastructure = [
 ];
 
 @Module({
-  imports: [CqrsModule, AuthorizationOnlyModule],
+  imports: [CqrsModule, AuthorizationOnlyModule, TaskModule],
   providers: [...application, TaskInstanceFactory, ...infrastructure],
   exports: [...infrastructure, TaskInstanceFactory],
 })

@@ -4,11 +4,12 @@ import { GameFactory } from './domain/game.factory';
 import { GameRepositoryImplements } from './infrastructure/game.repository.implements';
 import { InjectionToken } from './application/injection.token';
 import { AuthorizationOnlyModule } from '../../lib/authorization/src';
-import { GameInstanceModule } from '../game-instance/game-instance.module';
 import { GameDummyRepositoryImplements } from './dummy/game.dummy.repository.implements';
 import { DummyUseCases } from './dummy/dummy.use-cases';
 import { GameCreateHandler } from './application/command/game.create/game.create.handler';
 import { GameUpdateHandler } from './application/command/game.update/game.update.handler';
+import { UserGameResolver } from './api/user/game.resolver';
+import { RepoProvider } from '../common/repo.provider';
 
 const application = [GameCreateHandler, GameUpdateHandler];
 
@@ -23,9 +24,19 @@ const infrastructure = [
   },
 ];
 
+const resolvers = [UserGameResolver];
+
 @Module({
-  imports: [CqrsModule, AuthorizationOnlyModule, GameInstanceModule],
-  providers: [...application, GameFactory, ...infrastructure, DummyUseCases],
+  imports: [CqrsModule, AuthorizationOnlyModule],
+  providers: [
+    ...application,
+    GameFactory,
+    ...infrastructure,
+    RepoProvider,
+    DummyUseCases,
+    ...resolvers,
+  ],
+  exports: [GameFactory, ...infrastructure],
 })
 export class GameModule {
   constructor() {

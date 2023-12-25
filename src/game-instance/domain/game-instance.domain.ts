@@ -1,6 +1,6 @@
-import { AggregateRoot } from '@nestjs/cqrs';
 import { GameInstanceActivatedEvent } from './event/game-instance.activated.event';
 import { GameInstanceApprovedEvent } from './event/game-instance.approved.event';
+import { BaseDomain } from '../../common/base/base.domain';
 
 export type GameInstanceRequiredOptions = {
   id: string;
@@ -9,6 +9,7 @@ export type GameInstanceRequiredOptions = {
 };
 
 export type GameInstanceOptionalOptions = {
+  score: number;
   status: string;
 };
 
@@ -17,13 +18,15 @@ export type GameInstanceOptions = Required<GameInstanceRequiredOptions> &
 
 export interface GameInstance {
   approve: () => void;
+  start: () => void;
   commit: () => void;
 }
 
-export class GameInstanceDomain extends AggregateRoot implements GameInstance {
+export class GameInstanceDomain extends BaseDomain implements GameInstance {
   id: string;
   gameId: string;
   teamId: string;
+  score: number;
   status: string;
 
   approve() {
@@ -35,6 +38,10 @@ export class GameInstanceDomain extends AggregateRoot implements GameInstance {
         gameId: this.gameId,
       }),
     );
+  }
+
+  start() {
+    this.status = 'STARTED';
   }
 
   activate() {

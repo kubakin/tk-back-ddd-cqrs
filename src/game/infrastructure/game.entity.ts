@@ -23,4 +23,8 @@ export class GameEntity extends BaseEntity {
   duration: number;
   @Column()
   taskStrategy: string;
+  @Column({ default: true })
+  autoStart: boolean;
+  @Column({ default: true })
+  autoEnd: boolean;
 }

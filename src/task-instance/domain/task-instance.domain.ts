@@ -1,5 +1,5 @@
-import { AggregateRoot } from '@nestjs/cqrs';
 import { HasTaskId } from '../../task/domain/task.domain';
+import { BaseDomain } from '../../common/base/base.domain';
 
 export type TaskInstanceRequiredOptions = {
   id: string;
@@ -12,6 +12,8 @@ export type TaskInstanceOptionalOptions = {
   startedAt: Date;
   answeredAt: Date;
   answeredBy: string;
+  status: string;
+  helpStatus: number;
 };
 
 export type TeamTaskOptions = Required<TaskInstanceRequiredOptions> &
@@ -19,14 +21,16 @@ export type TeamTaskOptions = Required<TaskInstanceRequiredOptions> &
 
 export interface TaskInstance extends HasTaskId {}
 
-export class TaskInstanceDomain extends AggregateRoot implements TaskInstance {
+export class TaskInstanceDomain extends BaseDomain implements TaskInstance {
   id: string;
   taskId: string;
   gameInstanceId: string;
   order: number;
+  helpStatus: number;
   startedAt: Date;
   answeredAt: Date;
   answeredBy: string;
+  status: string;
 
   approve(userId: string) {
     this.answeredAt = new Date();

@@ -1,5 +1,8 @@
 import { BaseDomain } from '../../common/base/base.domain';
 import { Logger } from '@nestjs/common';
+import { SendAttemptRequestedEvent } from '../../team/domain/event/send.attempt.requested.event';
+import { SendUserMessageRequested } from './event/send.message.requested';
+import { generateString } from '@nestjs/typeorm';
 
 export type UserRequiredOptions = {
   id: string;
@@ -22,6 +25,7 @@ export interface User {
   created: () => void;
   deleted: () => void;
   commit: () => void;
+  sendMessage: (text: string) => void;
 }
 
 export class UserDomain extends BaseDomain implements User {
@@ -37,6 +41,28 @@ export class UserDomain extends BaseDomain implements User {
 
   created() {
     this.logger.debug(`User ${this.name}, ${this.phone} created`);
+  }
+
+  sendMessage(text: string) {
+    this.apply(
+      new SendUserMessageRequested({
+        text,
+        id: generateString(),
+        teamId: this.teamId,
+        userId: this.id,
+      }),
+    );
+  }
+
+  sendAttempt(taskInstanceId: string, answer: string) {
+    this.apply(
+      new SendAttemptRequestedEvent({
+        teamId: this.teamId,
+        userId: this.id,
+        answer: answer,
+        taskInstanceId,
+      }),
+    );
   }
 
   deleted() {

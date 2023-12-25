@@ -23,7 +23,7 @@ export class TeamFactory {
 
   reconstitute(options: TeamOptions): Team {
     return this.eventPublisher.mergeObjectContext(
-      Object.assign(new TeamDomain(), options),
+      Object.assign(new TeamDomain(), { ...options, updatedAt: new Date() }),
     );
   }
 }

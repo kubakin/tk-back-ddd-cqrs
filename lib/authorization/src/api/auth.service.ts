@@ -30,6 +30,11 @@ export class AuthService {
   ): Promise<{ accessToken: string; refreshToken: string }> {
     const user = await this.authDataProvider.provideByPhone(phone);
     if (!user) throw AuthorizationException.wrongCredentials();
+    if (user.password) {
+      if (user.password !== password) {
+        throw AuthorizationException.wrongCredentials();
+      }
+    }
     // const passwordIsValid = await this.passwordService.validate(
     //   password,
     //   user.passwordHash,

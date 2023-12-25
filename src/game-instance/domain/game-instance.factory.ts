@@ -1,8 +1,4 @@
-import {
-  GameInstance,
-  GameInstanceDomain,
-  GameInstanceOptions,
-} from './game-instance.domain';
+import { GameInstance, GameInstanceDomain } from './game-instance.domain';
 import { Inject, Injectable } from '@nestjs/common';
 import { EventPublisher } from '@nestjs/cqrs';
 
@@ -21,11 +17,14 @@ export class GameInstanceFactory {
       id: options.id,
       teamId: options.teamId,
       gameId: options.gameId,
+      score: 0,
+      createdAt: new Date(),
+      updatedAt: new Date(),
       status: 'CREATED',
     });
   }
 
-  reconstitute(options: GameInstanceOptions): GameInstance {
+  reconstitute(options: Partial<GameInstanceDomain>): GameInstance {
     return this.eventPublisher.mergeObjectContext(
       Object.assign(new GameInstanceDomain(), options),
     );

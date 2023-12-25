@@ -7,5 +7,4 @@ export class SendAttemptRequestedEvent {
   userId: string;
   teamId: string;
   answer: any;
-  currentGameId: string;
 }

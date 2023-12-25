@@ -1,0 +1,55 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserGame {
+  id: String!
+  name: String
+  description: String
+  cost: Float
+  rulesImgUrl: String
+  logoUrl: String
+  personLimit: Float
+  duration: Float
+  taskStrategy: String
+  autoStart: Boolean
+  autoEnd: Boolean
+}
+
+type UserGameInstance {
+  id: String!
+  teamId: String!
+  status: String!
+  gameId: String!
+  game: UserGame
+  team: UserTeam
+}
+
+type UserTeam {
+  id: String!
+  name: String
+  currentSessionId: String
+  gameSession: UserGameInstance
+}
+
+type UserUser {
+  id: String!
+  name: String
+  teamId: String
+  phone: String!
+  team: UserTeam
+}
+
+type Query {
+  user_user_list: [UserUser!]!
+  me: UserUser!
+}
+
+type Mutation {
+  changeSession(id: String!): String!
+}
+
+type Subscription {
+  newMessage(id: String!): String!
+  commentAdded: UserTeam!
+}

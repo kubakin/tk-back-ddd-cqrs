@@ -1,5 +1,6 @@
 import { GameTaskDistributeRequestedEvent } from './event/game-task.distribute.requested.event';
 import { BaseDomain } from '../../common/base/base.domain';
+import { Logger } from '@nestjs/common';
 
 export type GameRequiredOptions = {
   id: string;
@@ -27,7 +28,8 @@ export interface GameParams {
 
 export interface Game extends GameParams {
   isFree: boolean;
-  distribute: (teamId: string) => void;
+  startImmediate: boolean;
+  distribute: (instanceId: string) => void;
   commit: () => void;
   update: (data: Partial<GameDomain>) => void;
 }
@@ -35,6 +37,8 @@ export interface Game extends GameParams {
 export class GameDomain extends BaseDomain implements Game {
   id: string;
   name: string;
+  autoStart: boolean;
+  autoEnd: boolean;
   hidden: boolean;
   taskStrategy: string;
   cost: number;
@@ -44,14 +48,27 @@ export class GameDomain extends BaseDomain implements Game {
   duration: number;
   description: string;
 
-  distribute(teamId: string) {
+  distribute(instanceId: string) {
+    this.logger.debug(`Start destributing tasks`);
     this.apply(
-      new GameTaskDistributeRequestedEvent({ gameId: this.id, teamId }),
+      new GameTaskDistributeRequestedEvent({
+        id: this.id,
+        instanceId,
+        strategy: this.taskStrategy,
+      }),
     );
   }
 
   get isFree() {
     return this.cost === 0;
+  }
+
+  get startImmediate() {
+    return this.autoStart;
+  }
+
+  get logger() {
+    return new Logger(this.name);
   }
 
   update(data: Partial<GameDomain>) {
