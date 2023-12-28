@@ -11,6 +11,7 @@ export class GameRepositoryImplements implements GameRepository {
   }
 
   async onApplicationBootstrap() {
+    return;
     // console.log(generateString());
     const entity: GameEntity = {
       id: "0faea960-0684-47ae-950d-d5d354950c14",
