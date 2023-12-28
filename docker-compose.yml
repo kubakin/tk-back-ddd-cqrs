@@ -1,0 +1,19 @@
+version: '3.7'
+
+services:
+  app:
+    image: ${CI_REGISTRY_IMAGE}:${CI_COMMIT_REF_NAME}
+    container_name: ${CI_PROJECT_NAMESPACE}_${CI_PROJECT_NAME}_${CI_ENVIRONMENT_NAME}
+    restart: always
+    build:
+      context: .
+    ports:
+      - "${PORTS_SERVICE}"
+    env_file:
+      - .env
+    networks:
+      - project_network
+
+networks:
+  project_network:
+    name: ${CI_PROJECT_NAMESPACE}
