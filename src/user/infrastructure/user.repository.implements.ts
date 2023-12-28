@@ -7,17 +7,25 @@ import { UserDummyRepositoryInterface } from '../dummy/user.dummy.repository.int
 import { Like } from 'typeorm';
 import { Injectable } from '@nestjs/common';
 import { AuthData } from '../../../lib/authorization/src/api/auth-data-provider';
+import { EventBus } from '@nestjs/cqrs';
+import { UserUpdatedEvent } from './event/user.updated.event';
 
 @Injectable()
 export class UserRepositoryImplements
   implements UserRepository, UserDummyRepositoryInterface
 {
-  constructor(private userFactory: UserFactory) {}
+  constructor(
+    private userFactory: UserFactory,
+    private eventBus: EventBus,
+  ) {}
 
   async save(user: User) {
     const models = [user];
     const entities = models.map((model) => this.modelToEntity(model));
-    await this.repository.save(entities);
+    const result = await this.repository.save(entities, { reload: true });
+    result.map(async (it) => {
+      await this.eventBus.publish(new UserUpdatedEvent(it));
+    });
   }
 
   async delete(user: User) {

@@ -9,6 +9,6 @@ export class UserTeam {
   name: string;
   @Field({ nullable: true })
   currentSessionId: string;
-  @Field({ nullable: true })
+  @Field(() => UserGameInstance, { nullable: true })
   gameSession: UserGameInstance;
 }

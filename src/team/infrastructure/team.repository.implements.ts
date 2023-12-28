@@ -4,15 +4,23 @@ import { TeamFactory } from '../domain/team.factory';
 import { TeamEntity } from './team.entity';
 import { Injectable } from '@nestjs/common';
 import { writeConnection } from '../../../lib/db.module';
+import { EventBus } from '@nestjs/cqrs';
+import { TeamUpdatedEvent } from './event/team.updated.event';
 
 @Injectable()
 export class TeamRepositoryImplements implements TeamRepository {
-  constructor(private teamFactory: TeamFactory) {}
+  constructor(
+    readonly teamFactory: TeamFactory,
+    readonly eventBus: EventBus,
+  ) {}
 
   async save(team: Team) {
     const models = [team];
     const entities = models.map((model) => this.modelToEntity(model));
-    await this.repository.save(entities);
+    const result = await this.repository.save(entities);
+    result.map(async (it) => {
+      await this.eventBus.publish(new TeamUpdatedEvent(it));
+    });
   }
 
   async delete(team: Team) {
@@ -28,6 +36,13 @@ export class TeamRepositoryImplements implements TeamRepository {
 
   async findById(id: string) {
     const entity = await this.repository.findOne({ where: { id } });
+    return this.entityToModel(entity);
+  }
+  async findByCreatorId(userId: string) {
+    const entity = await this.repository.findOne({
+      where: { createdBy: userId },
+      order: { createdAt: 'DESC' },
+    });
     return this.entityToModel(entity);
   }
 

@@ -12,7 +12,7 @@ export class TeamChangeSessionHandler
   private readonly teamRepository: TeamRepository;
 
   async execute(command: TeamChangeSessionCommand): Promise<void> {
-    const team = await this.teamRepository.findById(command.id);
+    const team = await this.teamRepository.findByCreatorId(command.userId);
     team.changeCurrentSession(command.gameInstanceId);
     await this.teamRepository.save(team);
     team.commit();

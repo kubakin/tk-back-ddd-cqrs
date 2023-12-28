@@ -1,5 +1,4 @@
 export class TeamChangeSessionCommand {
-  id: string;
   gameInstanceId: string;
   userId: string;
 

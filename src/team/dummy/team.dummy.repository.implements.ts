@@ -2,11 +2,15 @@ import { TeamRepositoryImplements } from '../infrastructure/team.repository.impl
 import { Injectable } from '@nestjs/common';
 import { TeamFactory } from '../domain/team.factory';
 import { Like } from 'typeorm';
+import { EventBus } from '@nestjs/cqrs';
 
 @Injectable()
 export class TeamDummyRepositoryImplements extends TeamRepositoryImplements {
-  constructor(private factory: TeamFactory) {
-    super(factory);
+  constructor(
+    readonly factory: TeamFactory,
+    readonly eventBus: EventBus,
+  ) {
+    super(factory, eventBus);
   }
 
   async findDummyTeamIds() {

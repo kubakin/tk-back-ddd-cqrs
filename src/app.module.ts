@@ -14,7 +14,7 @@ import { PubSub } from "graphql-subscriptions";
 import { ScheduleModule } from "@nestjs/schedule";
 import { ApolloServerPluginLandingPageLocalDefault } from "@apollo/server/plugin/landingPage/default";
 
-const pubSub = new PubSub();
+export const pubSub = new PubSub();
 
 @Module({
   imports: [
@@ -24,29 +24,24 @@ const pubSub = new PubSub();
     TeamModule,
     TaskInstanceModule,
     GameInstanceModule,
-    // TaskModule,
-    // GameModule,
     AttemptModule,
     TestModule,
-    // GatewaysModule,
     ChatModule,
     AdminModule,
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: true,
+      playground: false,
       context: (ctx) => {
         ctx.pubSub = pubSub;
-        return ctx;
       },
+      introspection: true,
+      plugins: [ApolloServerPluginLandingPageLocalDefault()],
       subscriptions: {
         "graphql-ws": {
-          path: "/graphql"
+          path: "/sub"
         }
-        // "subscriptions-transport-ws": true
-      },
-      playground: false,
-      introspection: true,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()]
+      }
     })
   ],
   controllers: [],

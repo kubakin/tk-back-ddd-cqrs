@@ -1,21 +1,23 @@
-import { GameRepository } from '../domain/game.repository';
-import { Game } from '../domain/game.domain';
-import { GameFactory } from '../domain/game.factory';
-import { GameEntity } from './game.entity';
-import { writeConnection } from '../../../lib/db.module';
-import { Injectable } from '@nestjs/common';
+import { GameRepository } from "../domain/game.repository";
+import { Game } from "../domain/game.domain";
+import { GameFactory } from "../domain/game.factory";
+import { GameEntity } from "./game.entity";
+import { writeConnection } from "../../../lib/db.module";
+import { Injectable } from "@nestjs/common";
 
 @Injectable()
 export class GameRepositoryImplements implements GameRepository {
-  constructor(private gameFactory: GameFactory) {}
+  constructor(private gameFactory: GameFactory) {
+  }
 
   async onApplicationBootstrap() {
     // console.log(generateString());
     const entity: GameEntity = {
-      id: '0faea960-0684-47ae-950d-d5d354950c14',
+      id: "0faea960-0684-47ae-950d-d5d354950c14",
       logoUrl: null,
+      plannedAt: new Date(),
       rulesImgUrl: null,
-      description: 'Test Game',
+      description: "Test Game",
       duration: 0,
       hidden: false,
       autoEnd: true,
@@ -24,8 +26,8 @@ export class GameRepositoryImplements implements GameRepository {
       updatedAt: new Date(),
       cost: 0,
       personLimit: 0,
-      taskStrategy: 'DEFAULT',
-      name: 'Test Game',
+      taskStrategy: "DEFAULT",
+      name: "Test Game"
     };
     await this.repository.save(entity);
   }

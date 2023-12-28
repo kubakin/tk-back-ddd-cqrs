@@ -1,6 +1,6 @@
-import { Field, ObjectType } from '@nestjs/graphql';
-import { UserTeam } from '../../../team/api/user/team.schema';
-import { UserGame } from '../../../game/api/user/game.schema';
+import { Field, ObjectType } from "@nestjs/graphql";
+import { UserTeam } from "../../../team/api/user/team.schema";
+import { UserGame } from "../../../game/api/user/game.schema";
 
 @ObjectType()
 export class UserGameInstance {
@@ -12,7 +12,7 @@ export class UserGameInstance {
   status: string;
   @Field()
   gameId: string;
-  @Field({ nullable: true })
+  @Field(() => UserGame, { nullable: true })
   game: UserGame;
   @Field(() => UserTeam, { nullable: true })
   team: UserTeam;

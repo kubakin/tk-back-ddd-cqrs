@@ -16,16 +16,21 @@ import { TeamStartGameHandler } from "./application/command/team.start.game/team
 import { RepoProvider } from "../common/repo.provider";
 import { UserTeamResolver } from "./api/user/team.resolver";
 import { TeamChangeSessionHandler } from "./application/command/team.change.session/team.change.session.handler";
+import { AppResolver } from "../app.resolver";
+import { GameSessionCreated } from "./application/event/game.session.created.handler";
+import { TeamUpdatedHandler } from "./api/handlers/team.updated.handler";
 
 const application = [
   TeamCreateHandler,
   TeamDeleteHandler,
   TeamListHandler,
   TeamStartGameHandler,
-  TeamChangeSessionHandler
+  TeamChangeSessionHandler,
+  GameSessionCreated,
+  TeamUpdatedHandler
 ];
 
-const resolvers = [UserTeamResolver];
+const resolvers = [UserTeamResolver, AppResolver];
 
 const dummy = [DummyUseCases];
 

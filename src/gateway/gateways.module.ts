@@ -1,10 +1,11 @@
-import { Module } from '@nestjs/common';
-import { AdminGateway } from './admin.gateway';
-import { MessageCreatedHandler } from './application/event/message.created';
+import { Module } from "@nestjs/common";
+// import { AdminGateway } from './admin.gateway';
+import { MessageCreatedHandler } from "./application/event/message.created";
 
 @Module({
   imports: [],
   controllers: [],
-  providers: [AdminGateway, MessageCreatedHandler],
+  providers: [MessageCreatedHandler]
 })
-export class GatewaysModule {}
+export class GatewaysModule {
+}

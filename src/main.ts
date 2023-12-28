@@ -1,6 +1,6 @@
-import { NestFactory, Reflector } from "@nestjs/core";
+import { NestFactory } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
+import { ValidationPipe } from "@nestjs/common";
 import { AuthorizationExceptionHandler } from "../lib/authorization/src/authorization.exception-handler";
 import * as bodyParser from "body-parser";
 import * as cookieParser from "cookie-parser";
@@ -23,7 +23,7 @@ async function bootstrap() {
 
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   app.use(cookieParser());
-  app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
+  // app.useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)));
   app.useGlobalFilters(new AuthorizationExceptionHandler());
   await app.listen(process.env.PORT || 3000);
 

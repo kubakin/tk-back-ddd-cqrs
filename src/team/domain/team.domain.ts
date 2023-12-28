@@ -1,10 +1,12 @@
-import { TeamJoinRequestedEvent } from './event/team.join.requested.event';
-import { generateString } from '@nestjs/typeorm';
-import { HasId } from '../../common/interfaces/has-id.interface';
-import { SendAttemptRequestedEvent } from './event/send.attempt.requested.event';
-import { Logger } from '@nestjs/common';
-import { TeamDeletedEvent } from './event/team.deleted.event';
-import { BaseDomain } from '../../common/base/base.domain';
+import { TeamJoinRequestedEvent } from "./event/team.join.requested.event";
+import { generateString } from "@nestjs/typeorm";
+import { HasId } from "../../common/interfaces/has-id.interface";
+import { SendAttemptRequestedEvent } from "./event/send.attempt.requested.event";
+import { Logger } from "@nestjs/common";
+import { TeamDeletedEvent } from "./event/team.deleted.event";
+import { BaseDomain } from "../../common/base/base.domain";
+import { TeamCreatedEvent } from "./event/team.created.event";
+import { CreateSessionRequested } from "./event/create.session.requested";
 
 export type TeamRequiredOptions = {
   id: string;
@@ -27,6 +29,7 @@ export interface Team extends HasId {
   deleted: () => void;
   commit: () => void;
   changeCurrentSession: (instanceId: string) => void;
+  createSessionRequest: (id: string, gameId: string) => void;
 }
 
 export class TeamDomain extends BaseDomain implements Team {
@@ -36,11 +39,16 @@ export class TeamDomain extends BaseDomain implements Team {
   createdBy: string;
 
   created() {
-    this.logger.debug('Created');
+    this.logger.debug("Created");
+    this.apply(new TeamCreatedEvent({
+      name: this.name,
+      id: this.id,
+      createdBy: this.createdBy
+    }));
   }
 
   deleted() {
-    this.logger.debug('Deleted');
+    this.logger.debug("Deleted");
     this.apply(new TeamDeletedEvent({ id: this.id }));
   }
 
@@ -50,8 +58,8 @@ export class TeamDomain extends BaseDomain implements Team {
         teamId: this.id,
         userId,
         answer: answer,
-        taskInstanceId,
-      }),
+        taskInstanceId
+      })
     );
   }
 
@@ -60,13 +68,17 @@ export class TeamDomain extends BaseDomain implements Team {
       new TeamJoinRequestedEvent({
         id: generateString(),
         teamId: this.id,
-        gameId,
-      }),
+        gameId
+      })
     );
   }
 
   changeCurrentSession(instanceId: string) {
     this.currentSessionId = instanceId;
+  }
+
+  createSessionRequest(id: string, gameId: string) {
+    this.apply(new CreateSessionRequested({ teamId: this.id, gameId, id: generateString() }))
   }
 
   get logger() {

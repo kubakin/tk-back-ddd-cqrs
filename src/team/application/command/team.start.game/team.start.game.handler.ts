@@ -12,7 +12,7 @@ export class TeamStartGameHandler
   private readonly teamRepository: TeamRepository;
 
   async execute(command: TeamStartGameCommand): Promise<void> {
-    const team = await this.teamRepository.findById(command.id);
+    const team = await this.teamRepository.findByCreatorId(command.userId);
     team.joinGame(command.gameId);
     // await this.teamRepository.save(team);
     team.commit();

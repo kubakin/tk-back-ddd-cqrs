@@ -1,8 +1,8 @@
-import { BaseDomain } from '../../common/base/base.domain';
-import { Logger } from '@nestjs/common';
-import { SendAttemptRequestedEvent } from '../../team/domain/event/send.attempt.requested.event';
-import { SendUserMessageRequested } from './event/send.message.requested';
-import { generateString } from '@nestjs/typeorm';
+import { BaseDomain } from "../../common/base/base.domain";
+import { Logger } from "@nestjs/common";
+import { SendAttemptRequestedEvent } from "../../team/domain/event/send.attempt.requested.event";
+import { SendUserMessageRequested } from "./event/send.message.requested";
+import { generateString } from "@nestjs/typeorm";
 
 export type UserRequiredOptions = {
   id: string;
@@ -49,8 +49,8 @@ export class UserDomain extends BaseDomain implements User {
         text,
         id: generateString(),
         teamId: this.teamId,
-        userId: this.id,
-      }),
+        userId: this.id
+      })
     );
   }
 
@@ -60,8 +60,8 @@ export class UserDomain extends BaseDomain implements User {
         teamId: this.teamId,
         userId: this.id,
         answer: answer,
-        taskInstanceId,
-      }),
+        taskInstanceId
+      })
     );
   }
 

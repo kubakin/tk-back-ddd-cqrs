@@ -20,7 +20,9 @@ import { UserListHandler } from "./application/query/user.list/user.list.handler
 import { SendMessageHandler } from "./application/command/send.message/send.message.handler";
 import { MeHandler } from "./application/query/me/me.handler";
 import { RepoProvider } from "../common/repo.provider";
-import { TestResolver } from "./api/user/test.resolver";
+import { UserUserResolver } from "./api/user/user.resolver";
+import { AddLeaderToTeamHandler } from "./application/event/add-leader-to-team.handler";
+import { UserUpdatedHandler } from "./api/handlers/user.updated.handler";
 
 const application = [
   UserRegisterHandler,
@@ -30,10 +32,12 @@ const application = [
   UserLeaveHandler,
   UserDeleteHandler,
   UserListHandler,
-  MeHandler
+  MeHandler,
+  AddLeaderToTeamHandler,
+  UserUpdatedHandler
 ];
 
-const resolvers = [TestResolver];
+const resolvers = [UserUserResolver];
 
 const dummy = [DummyUseCases];
 

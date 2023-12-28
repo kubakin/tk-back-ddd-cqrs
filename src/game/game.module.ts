@@ -10,6 +10,7 @@ import { GameCreateHandler } from './application/command/game.create/game.create
 import { GameUpdateHandler } from './application/command/game.update/game.update.handler';
 import { UserGameResolver } from './api/user/game.resolver';
 import { RepoProvider } from '../common/repo.provider';
+import { AdminGameResolver } from './api/admin/game.resolver';
 
 const application = [GameCreateHandler, GameUpdateHandler];
 
@@ -24,7 +25,7 @@ const infrastructure = [
   },
 ];
 
-const resolvers = [UserGameResolver];
+const resolvers = [UserGameResolver, AdminGameResolver];
 
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule],
