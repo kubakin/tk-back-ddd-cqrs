@@ -6,9 +6,13 @@ import { AttemptFailed } from './event/attempt.failed';
 
 export type TaskRequiredOptions = {
   id: string;
-  text: string;
+  description: any;
   defaultOrder: number;
-  forceAnswer: boolean;
+  answer: any;
+  gameId: string;
+  cost: number;
+  penalty: number;
+  name: string;
 };
 
 export interface HasTaskId {
@@ -17,8 +21,6 @@ export interface HasTaskId {
 
 export type TaskOptionalOptions = {
   possibleAnswers?: string[];
-  mediaUrl: string;
-  mediaType: string;
 };
 
 export interface TaskParams {
@@ -39,33 +41,31 @@ export interface Task extends HasId, TaskParams {
 
 export class TaskDomain extends AggregateRoot implements Task {
   id: string;
-  text: string;
+  body: any;
   defaultOrder: number;
-  forceAnswer: boolean;
-  possibleAnswers?: string[];
   penalty: number;
   cost: number;
 
   answerIsValid() {}
 
   validate(attemptId: string, instanceId: string, data: TaskAnswerType) {
-    if (this.possibleAnswers.includes(data)) {
-      this.apply(
-        new AttemptSucceed({
-          attemptId,
-          taskInstanceId: instanceId,
-          scoreChange: this.cost,
-        }),
-      );
-    } else {
-      this.apply(
-        new AttemptFailed({
-          attemptId,
-          taskInstanceId: instanceId,
-          scoreChange: this.penalty,
-        }),
-      );
-    }
+    // if (this.possibleAnswers.includes(data)) {
+    //   this.apply(
+    //     new AttemptSucceed({
+    //       attemptId,
+    //       taskInstanceId: instanceId,
+    //       scoreChange: this.cost,
+    //     }),
+    //   );
+    // } else {
+    //   this.apply(
+    //     new AttemptFailed({
+    //       attemptId,
+    //       taskInstanceId: instanceId,
+    //       scoreChange: this.penalty,
+    //     }),
+    //   );
+    // }
   }
 
   sendResponse() {}

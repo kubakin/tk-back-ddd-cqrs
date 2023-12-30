@@ -1,15 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
-export class CreateGameDto {
+export class CreateUpdateGameDto {
   @Field({ nullable: true })
   name: string;
-  @Field({ nullable: true })
+  @Field()
   description: string;
   @Field({ nullable: true, defaultValue: 0 })
   cost: number;
-  @Field({ nullable: true })
-  rulesImgUrl: string;
+  @Field()
+  rules: string;
   @Field({ nullable: true })
   logoUrl: string;
   @Field({ nullable: true, defaultValue: 0 })

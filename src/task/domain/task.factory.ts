@@ -4,9 +4,13 @@ import { EventPublisher } from '@nestjs/cqrs';
 
 interface CreateTaskOption {
   id: string;
-  text: string;
+  description: any;
   defaultOrder: number;
-  forceAnswer: boolean;
+  answer: any;
+  gameId: string;
+  cost: number;
+  penalty: number;
+  name: string;
 }
 
 @Injectable()
@@ -16,9 +20,13 @@ export class TaskFactory {
   create(options: CreateTaskOption): Task {
     return this.reconstitute({
       id: options.id,
-      text: options.text,
+      description: options.description,
       defaultOrder: options.defaultOrder,
-      forceAnswer: options.forceAnswer,
+      answer: options.answer,
+      gameId: options.gameId,
+      cost: options.cost,
+      penalty: options.penalty,
+      name: options.name,
     });
   }
 

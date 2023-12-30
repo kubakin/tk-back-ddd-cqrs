@@ -5,6 +5,9 @@ import { TaskRepositoryImplements } from './infrastructure/task.repository.imple
 import { InjectionToken } from './application/injection.token';
 import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { TaskCreateHandler } from './application/command/task.create/task.create.handler';
+import { AdminTaskResolver } from './api/admin/task.resolver';
+import { UserTaskResolver } from './api/user/task.resolver';
+import { RepoProvider } from 'src/common/repo.provider';
 
 const application = [TaskCreateHandler];
 
@@ -15,9 +18,17 @@ const infrastructure = [
   },
 ];
 
+const resolvers = [AdminTaskResolver, UserTaskResolver];
+
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule],
-  providers: [...application, TaskFactory, ...infrastructure],
+  providers: [
+    ...application,
+    TaskFactory,
+    ...infrastructure,
+    ...resolvers,
+    RepoProvider,
+  ],
   exports: [...infrastructure, TaskFactory],
 })
 export class TaskModule {

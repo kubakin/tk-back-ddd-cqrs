@@ -4,20 +4,23 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 export class TaskEntity {
   @PrimaryColumn()
   id: string;
-  @Column()
-  text: string;
+  @Column({ nullable: true })
+  description: string;
+  @Column({ default: 'Zadanie', nullable: true })
+  name: string;
   @Column({ default: 0 })
   defaultOrder: number;
-  @Column({ default: true })
-  forceAnswer: boolean;
-  @Column({ nullable: true })
-  answer: string;
+  @Column({ default: 'default' })
+  type: string;
+  @Column('json', { default: {} })
+  answer: any;
   @Column()
   gameId: string;
   @Column()
   cost: number;
   @Column()
   penalty: number;
+
   // @Column({ nullable: true })
   // fileAnswer: string;
 }

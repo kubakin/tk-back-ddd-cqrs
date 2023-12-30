@@ -4,7 +4,7 @@ export class GameUpdateCommand {
   hidden: boolean;
   taskStrategy: string;
   cost: number;
-  rulesImgUrl: string;
+  rules: string;
   logoUrl: string;
   personLimit: number;
   duration: number;

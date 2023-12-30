@@ -8,7 +8,7 @@ import { AdminAuthDataProvider } from './application/providers/admin-auth-data-p
 import { AdminRepositoryImplements } from './infrastructure/admin.repository.implements';
 import { SendAdminMessageHandler } from './application/command/send.message/send.admin.message.handler';
 import { AdminFactory } from './domain/admin.factory';
-import { AdminAdminController } from './api/admin.admin.controller';
+import { AuthContoller } from './api/auth.controller';
 
 const application = [SendAdminMessageHandler];
 
@@ -36,7 +36,7 @@ const infrastructure = [
     },
   ],
   exports: [AUTH_DATA_PROVIDER],
-  controllers: [AdminAdminController],
+  controllers: [AuthContoller],
 })
 export class AdminModule {
   constructor() {}

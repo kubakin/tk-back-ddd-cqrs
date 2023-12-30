@@ -1,5 +1,5 @@
-import { Field, ObjectType } from "@nestjs/graphql";
-import { UserGameInstance } from "../../../game-instance/api/user/game-instance.schema";
+import { Field, ObjectType } from '@nestjs/graphql';
+import { UserGameInstance } from '../../../game-instance/api/user/game-instance.schema';
 
 @ObjectType()
 export class UserTeam {
@@ -9,6 +9,10 @@ export class UserTeam {
   name: string;
   @Field({ nullable: true })
   currentSessionId: string;
+  @Field()
+  createdBy: string;
   @Field(() => UserGameInstance, { nullable: true })
   gameSession: UserGameInstance;
+  @Field()
+  createdAt: Date;
 }

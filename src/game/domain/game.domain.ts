@@ -12,7 +12,7 @@ export type GameRequiredOptions = {
 export type GameOptionalOptions = {
   description: string;
   hidden: boolean;
-  rulesImgUrl: string;
+  rules: string;
   logoUrl: string;
   personLimit: number;
   cost: number;
@@ -42,7 +42,7 @@ export class GameDomain extends BaseDomain implements Game {
   hidden: boolean;
   taskStrategy: string;
   cost: number;
-  rulesImgUrl: string;
+  rules: string;
   logoUrl: string;
   personLimit: number;
   duration: number;

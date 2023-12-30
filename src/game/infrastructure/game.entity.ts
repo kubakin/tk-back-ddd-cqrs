@@ -14,7 +14,7 @@ export class GameEntity extends BaseEntity {
   @Column()
   cost: number;
   @Column({ nullable: true })
-  rulesImgUrl: string;
+  rules: string;
   @Column({ nullable: true })
   logoUrl: string;
   @Column()

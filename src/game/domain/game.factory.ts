@@ -8,7 +8,7 @@ interface CreateGameOptions {
   hidden?: boolean;
   taskStrategy: string;
   cost?: number;
-  rulesImgUrl: string;
+  rules: string;
   logoUrl: string;
   personLimit: number;
   duration: number;
@@ -26,7 +26,7 @@ export class GameFactory {
       cost: options.cost,
       hidden: !!options.hidden,
       duration: options.duration,
-      rulesImgUrl: options.rulesImgUrl,
+      rules: options.rules,
       description: options.description,
       personLimit: options.personLimit,
       taskStrategy: options.taskStrategy,

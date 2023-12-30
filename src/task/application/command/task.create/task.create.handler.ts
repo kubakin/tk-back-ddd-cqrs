@@ -17,9 +17,13 @@ export class TaskCreateHandler
   async execute(command: TaskCreateCommand): Promise<void> {
     const user = this.taskFactory.create({
       id: command.id,
-      text: command.text,
-      defaultOrder: command.order,
-      forceAnswer: command.forceAnswer,
+      description: command.description,
+      answer: command.answer,
+      defaultOrder: command.defaultOrder,
+      gameId: command.gameId,
+      name: command.name,
+      cost: command.cost,
+      penalty: command.penalty,
     });
     await this.taskRepository.save(user);
   }

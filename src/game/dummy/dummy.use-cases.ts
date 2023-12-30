@@ -48,7 +48,7 @@ export class DummyUseCases {
         duration: 10,
         taskStrategy: 'DEFAULT',
         cost: 0,
-        rulesImgUrl: 'test',
+        rules: 'test',
         personLimit: 10,
       }),
     );

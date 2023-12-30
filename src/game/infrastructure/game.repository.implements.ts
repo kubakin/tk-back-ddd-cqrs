@@ -17,7 +17,7 @@ export class GameRepositoryImplements implements GameRepository {
       id: "0faea960-0684-47ae-950d-d5d354950c14",
       logoUrl: null,
       plannedAt: new Date(),
-      rulesImgUrl: null,
+      rules: null,
       description: "Test Game",
       duration: 0,
       hidden: false,

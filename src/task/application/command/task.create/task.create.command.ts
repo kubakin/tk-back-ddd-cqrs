@@ -1,11 +1,13 @@
 export class TaskCreateCommand {
   id: string;
-  text: string;
+  name: string
+  answer: any
+  type: string
+  description: string;
   gameId: string;
-  mediaUrl?: string;
-  mediaType?: string;
-  forceAnswer: boolean;
-  order: number;
+  defaultOrder: number;
+  cost: number;
+  penalty: number;
 
   constructor(data: TaskCreateCommand) {
     Object.assign(this, data);

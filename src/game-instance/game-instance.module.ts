@@ -12,6 +12,7 @@ import { GameModule } from '../game/game.module';
 import { GameInstanceListHandler } from './application/query/game.instance.list/game.instance.list.handler';
 import { UserGameInstanceResolver } from './api/user/game-instance.resolver';
 import { RepoProvider } from '../common/repo.provider';
+import { AdminGameInstanceResolver } from './api/admin/game-instance.resolver';
 
 const application = [TeamJoinRequestedHandler, GameInstanceListHandler];
 
@@ -26,7 +27,7 @@ const infrastructure = [
   },
 ];
 
-const resolvers = [UserGameInstanceResolver];
+const resolvers = [UserGameInstanceResolver, AdminGameInstanceResolver];
 
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule, GameModule],

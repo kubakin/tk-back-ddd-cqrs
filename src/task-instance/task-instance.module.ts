@@ -7,6 +7,9 @@ import { TaskInstanceFactory } from './domain/task-instance.factory';
 import { TaskModule } from '../task/task.module';
 import { AttemptCreatedHandler } from './application/event/attempt.created.handler';
 import { TasksDistributeRequestedHandler } from './application/event/tasks.distribute.requested.handler';
+import { UserTaskInstanceResolver } from './api/user/task-instance.resolver';
+import { AdminTaskInstanceResolver } from './api/admin/task-instance.resolver';
+import { RepoProvider } from 'src/common/repo.provider';
 
 const application = [AttemptCreatedHandler, TasksDistributeRequestedHandler];
 
@@ -17,9 +20,17 @@ const infrastructure = [
   },
 ];
 
+const resolvers = [AdminTaskInstanceResolver, UserTaskInstanceResolver];
+
 @Module({
   imports: [CqrsModule, AuthorizationOnlyModule, TaskModule],
-  providers: [...application, TaskInstanceFactory, ...infrastructure],
+  providers: [
+    ...application,
+    TaskInstanceFactory,
+    ...infrastructure,
+    ...resolvers,
+    RepoProvider,
+  ],
   exports: [...infrastructure, TaskInstanceFactory],
 })
 export class TaskInstanceModule {

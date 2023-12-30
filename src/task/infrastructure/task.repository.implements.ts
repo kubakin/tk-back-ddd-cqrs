@@ -1,9 +1,9 @@
-import { TaskRepository } from "../domain/task.repository";
-import { TaskFactory } from "../domain/task.factory";
-import { HasTaskId, Task } from "../domain/task.domain";
-import { TaskEntity } from "./task.entity";
-import { Injectable } from "@nestjs/common";
-import { writeConnection } from "../../../lib/db.module";
+import { TaskRepository } from '../domain/task.repository';
+import { TaskFactory } from '../domain/task.factory';
+import { HasTaskId, Task } from '../domain/task.domain';
+import { TaskEntity } from './task.entity';
+import { Injectable } from '@nestjs/common';
+import { writeConnection } from '../../../lib/db.module';
 
 // const repository: TaskEntity[] = [
 //   {
@@ -16,43 +16,42 @@ import { writeConnection } from "../../../lib/db.module";
 
 @Injectable()
 export class TaskRepositoryImplements implements TaskRepository {
-  constructor(private teamFactory: TaskFactory) {
-  }
+  constructor(private teamFactory: TaskFactory) {}
 
   async onApplicationBootstrap() {
     return;
-    const task1: TaskEntity = {
-      id: "d08cdf5a-e9c9-41af-84fe-4e00b72de657",
-      gameId: "0faea960-0684-47ae-950d-d5d354950c14",
-      defaultOrder: 1,
-      forceAnswer: true,
-      answer: "answer",
-      text: "Task 1",
-      cost: 1,
-      penalty: 1
-    };
-    const task2: TaskEntity = {
-      id: "8e45dbef-04a1-433b-93b6-149392059a4c",
-      gameId: "0faea960-0684-47ae-950d-d5d354950c14",
-      defaultOrder: 1,
-      forceAnswer: true,
-      answer: "answer",
-      text: "Task 1",
-      cost: 1,
-      penalty: 1
-    };
-    const task3: TaskEntity = {
-      id: "ff82745d-8bdb-4c84-ba7d-602471025cd3",
-      gameId: "0faea960-0684-47ae-950d-d5d354950c14",
-      defaultOrder: 1,
-      forceAnswer: true,
-      answer: "answer",
-      text: "Task 1",
-      cost: 1,
-      penalty: 1
-    };
-    const tasks = [task1, task2, task3];
-    await this.repository.save(tasks);
+    // const task1: TaskEntity = {
+    //   id: "d08cdf5a-e9c9-41af-84fe-4e00b72de657",
+    //   gameId: "0faea960-0684-47ae-950d-d5d354950c14",
+    //   defaultOrder: 1,
+    //   forceAnswer: true,
+    //   answer: "answer",
+    //   text: "Task 1",
+    //   cost: 1,
+    //   penalty: 1
+    // };
+    // const task2: TaskEntity = {
+    //   id: "8e45dbef-04a1-433b-93b6-149392059a4c",
+    //   gameId: "0faea960-0684-47ae-950d-d5d354950c14",
+    //   defaultOrder: 1,
+    //   forceAnswer: true,
+    //   answer: "answer",
+    //   text: "Task 1",
+    //   cost: 1,
+    //   penalty: 1
+    // };
+    // const task3: TaskEntity = {
+    //   id: "ff82745d-8bdb-4c84-ba7d-602471025cd3",
+    //   gameId: "0faea960-0684-47ae-950d-d5d354950c14",
+    //   defaultOrder: 1,
+    //   forceAnswer: true,
+    //   answer: "answer",
+    //   text: "Task 1",
+    //   cost: 1,
+    //   penalty: 1
+    // };
+    // const tasks = [task1, task2, task3];
+    // await this.repository.save(tasks);
   }
 
   async save(task: Task) {
@@ -73,7 +72,7 @@ export class TaskRepositoryImplements implements TaskRepository {
   }
 
   async findTaskByInstanceThatNeedBeAnswered(
-    instance: HasTaskId
+    instance: HasTaskId,
   ): Promise<Task> {
     return null;
   }
