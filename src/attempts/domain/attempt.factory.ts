@@ -8,6 +8,7 @@ interface CreateAttemptOption {
   taskInstanceId: string;
   teamId: string;
   data: TaskAnswerType;
+  userId: string
 }
 
 @Injectable()
@@ -21,7 +22,8 @@ export class AttemptFactory {
       teamId: options.teamId,
       createdAt: new Date(),
       data: options.data,
-      status: 'CREATED',
+      status: 'Created',
+      userId: options.userId,
     });
   }
 

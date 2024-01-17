@@ -15,7 +15,7 @@ export class TeamJoinRequestedHandler implements IEventHandler {
   @Inject(GameInjectionToken.GameRepository)
   gameRepository: GameRepository;
 
-  constructor(private factory: GameInstanceFactory) { }
+  constructor(private factory: GameInstanceFactory) {}
 
   async handle(event: TeamJoinRequestedEvent): Promise<void> {
     const game = await this.gameRepository.findById(event.gameId);
@@ -25,13 +25,11 @@ export class TeamJoinRequestedHandler implements IEventHandler {
       gameId: event.gameId,
       teamId: event.teamId,
     });
-
-    await this.repository.save(gameInstance);
-    if (game.isFree) {
-      game.distribute(event.id);
-      game.commit();
-    }
     gameInstance.created();
+    if (game.isFree) {
+      gameInstance.approve();
+    }
+    await this.repository.save(gameInstance);
     gameInstance.commit();
   }
 }

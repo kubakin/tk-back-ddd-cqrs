@@ -4,6 +4,7 @@ import { AttemptFactory } from '../../domain/attempt.factory';
 import { Inject } from '@nestjs/common';
 import { InjectionToken } from '../injection.token';
 import { AttemptRepository } from '../../domain/attempt.repository';
+import { generateString } from '@nestjs/typeorm';
 
 @EventsHandler(SendAttemptRequestedEvent)
 export class AttemptSendedHandler
@@ -18,7 +19,8 @@ export class AttemptSendedHandler
       teamId: event.teamId,
       taskInstanceId: event.taskInstanceId,
       data: event.answer,
-      id: 'qwerty',
+      id: generateString(),
+      userId: event.userId,
     });
     attempt.created();
     await this.repository.save(attempt);

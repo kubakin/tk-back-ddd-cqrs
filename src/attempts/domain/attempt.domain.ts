@@ -1,12 +1,15 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { AttemptCreated } from './event/attempt.created';
 import { TaskAnswerType } from '../../task/domain/types/task-answer.type';
+import { AttemptSucceed } from './event/attempt.succeed';
+import { AttemptFailed } from './event/attempt.failed';
 
 export type AttemptRequiredOptions = {
   id: string;
   taskInstanceId: string;
   teamId: string;
   data: TaskAnswerType;
+  userId: string;
 };
 
 export type AttemptOptionalOptions = {
@@ -19,6 +22,8 @@ export type AttemptOptions = Required<AttemptRequiredOptions> &
 
 export interface Attempt {
   created: () => void;
+  decline: (scoreChange: number) => void;
+  approve: (scoreChange: number) => void;
   commit: () => void;
 }
 
@@ -29,6 +34,7 @@ export class AttemptDomain extends AggregateRoot implements Attempt {
   teamId: string;
   createdAt: Date;
   status: string;
+  userId: string;
 
   created() {
     this.apply(
@@ -41,5 +47,26 @@ export class AttemptDomain extends AggregateRoot implements Attempt {
     );
   }
 
-  approve() {}
+  approve(scoreChange: number) {
+    this.status = 'Successed';
+    this.apply(
+      new AttemptSucceed({
+        attemptId: this.id,
+        taskInstanceId: this.taskInstanceId,
+        userId: this.userId,
+        scoreChange,
+      }),
+    );
+  }
+
+  decline(scoreChange: number) {
+    this.status = 'Declined';
+    this.apply(
+      new AttemptFailed({
+        attemptId: this.id,
+        taskInstanceId: this.taskInstanceId,
+        scoreChange,
+      }),
+    );
+  }
 }

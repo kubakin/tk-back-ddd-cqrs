@@ -9,6 +9,8 @@ export class UserTaskInstance {
   @Field()
   taskId: string;
   @Field()
+  name: string;
+  @Field()
   gameInstanceId: string;
   @Field()
   order: number;
@@ -22,8 +24,8 @@ export class UserTaskInstance {
   status: string;
   @Field()
   helpStatus: number;
-  @Field(()=>UserTask)
+  @Field(() => UserTask, { nullable: true })
   task: UserTask;
-  @Field(()=>UserGameInstance)
+  @Field(() => UserGameInstance)
   gameInstance: UserGameInstance;
 }

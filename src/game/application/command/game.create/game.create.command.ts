@@ -1,14 +1,16 @@
 export class GameCreateCommand {
   id: string;
   name: string;
+  description: string;
   hidden: boolean;
-  taskStrategy: string;
   cost: number;
   rules: string;
-  logoUrl: string;
   personLimit: number;
   duration: number;
-  description?: string;
+  taskStrategy: string;
+  autoStart: boolean;
+  autoEnd: boolean;
+  plannedAt: Date;
 
   constructor(data: GameCreateCommand) {
     Object.assign(this, data);

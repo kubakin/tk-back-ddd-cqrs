@@ -25,6 +25,13 @@ export class TaskInstanceRepositoryImplements
     await this.repository.remove(entities);
   }
 
+  async findOneForDistribute(gameInstanceId: string) {
+    const entity = await this.repository.findOne({
+      where: { gameInstanceId, status: 'Created' },
+    });
+    return this.entityToModel(entity);
+  }
+
   async findAll() {
     const entities = await this.repository.find();
     return entities.map((it) => this.entityToModel(it));
@@ -36,6 +43,7 @@ export class TaskInstanceRepositoryImplements
   }
 
   private entityToModel(data: TaskInstanceEntity): TaskInstance {
+    if (!data) return null;
     return this.factory.reconstitute(data);
   }
 

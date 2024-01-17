@@ -23,6 +23,8 @@ import { UserUserResolver } from './api/user/user.resolver';
 import { AddLeaderToTeamHandler } from './application/event/add-leader-to-team.handler';
 import { UserUpdatedHandler } from './api/handlers/user.updated.handler';
 import { AdminUserResolver } from './api/admin/user.resolver';
+import { PositionModule } from 'src/position/position.module';
+import { UserUserSubResolver } from './api/user/user-sub.resolver';
 
 const application = [
   UserRegisterHandler,
@@ -37,7 +39,7 @@ const application = [
   UserUpdatedHandler,
 ];
 
-const resolvers = [UserUserResolver, AdminUserResolver];
+const resolvers = [UserUserResolver, AdminUserResolver, UserUserSubResolver];
 
 const dummy = [DummyUseCases];
 
@@ -53,7 +55,7 @@ const infrastructure = [
 ];
 
 @Module({
-  imports: [CqrsModule, AuthorizationOnlyModule],
+  imports: [CqrsModule, AuthorizationOnlyModule, PositionModule],
   providers: [
     ...application,
     UserFactory,

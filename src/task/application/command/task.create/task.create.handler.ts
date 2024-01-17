@@ -19,6 +19,7 @@ export class TaskCreateHandler
       id: command.id,
       description: command.description,
       answer: command.answer,
+      type: command.type,
       defaultOrder: command.defaultOrder,
       gameId: command.gameId,
       name: command.name,

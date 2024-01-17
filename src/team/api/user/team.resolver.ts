@@ -16,10 +16,12 @@ import { CreateTeamDto } from './dto/create-team.dto';
 import { TeamCreateCommand } from '../../application/command/team.create/team.create.command';
 import { generateString } from '@nestjs/typeorm';
 import { TeamStartGameCommand } from 'src/team/application/command/team.start.game/team.start.game.command';
+import { GqlUserGuard } from 'lib/authorization/src/gql.user.guard';
 
 const pubSub = new PubSub();
 
 @Resolver(() => UserTeam)
+@GqlUserGuard()
 export class UserTeamResolver {
   constructor(
     private provider: RepoProvider,

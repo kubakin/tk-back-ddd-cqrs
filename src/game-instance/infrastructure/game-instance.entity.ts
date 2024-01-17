@@ -11,6 +11,8 @@ export class GameInstanceEntity extends BaseEntity {
   teamId: string;
   @Column({ default: 0 })
   score: number;
-  @Column()
+  @Column('varchar')
   status: string;
+  @Column({ nullable: true })
+  currentTaskId: string;
 }

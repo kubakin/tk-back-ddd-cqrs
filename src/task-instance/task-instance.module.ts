@@ -10,8 +10,21 @@ import { TasksDistributeRequestedHandler } from './application/event/tasks.distr
 import { UserTaskInstanceResolver } from './api/user/task-instance.resolver';
 import { AdminTaskInstanceResolver } from './api/admin/task-instance.resolver';
 import { RepoProvider } from 'src/common/repo.provider';
+import { AttemptSucceedHandler } from './application/event/attempt.successed.handler';
+import { AttemptFailedHandler } from './application/event/attempt.declined.handler';
+import { TaskAssignerSaga } from './application/saga/task.assigner/task.assigner.saga';
+import { TaskAssignHandler } from './application/command/task.assign/task.assign.handler';
+import { TaskVoidHandler } from './application/command/task.void/task.void.handler';
 
-const application = [AttemptCreatedHandler, TasksDistributeRequestedHandler];
+const application = [
+  AttemptCreatedHandler,
+  TasksDistributeRequestedHandler,
+  AttemptSucceedHandler,
+  AttemptFailedHandler,
+  TaskAssignerSaga,
+  TaskAssignHandler,
+  TaskVoidHandler
+];
 
 const infrastructure = [
   {

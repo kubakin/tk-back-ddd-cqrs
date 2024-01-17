@@ -19,19 +19,25 @@ import { generateString } from '@nestjs/typeorm';
 import { pubSub } from '../../../app.module';
 import { SendAttemptDto } from '../dto/send.attempt.dto';
 import { SendMessageCommand } from 'src/user/application/command/send.message/send.message.command';
+import { SkipThrottle } from '@nestjs/throttler';
+import { SendPositionDto } from './dto/send.position.dto';
+import { PositionService } from 'src/position/position.service';
+import { UserGuard } from 'lib/authorization/src/user.guard';
+import {
+  GqlUserGuard,
+  GqlWsUserGuard,
+} from 'lib/authorization/src/gql.user.guard';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => UserUser)
+@GqlUserGuard()
 export class UserUserResolver {
   constructor(
     private provider: RepoProvider,
     private commandBus: CommandBus,
+    private positionService: PositionService,
   ) {}
 
-  
-  @Subscription(() => UserUser)
-  userUpdated() {
-    return pubSub.asyncIterator('userUpdated');
-  }
 
   @Query(() => UserUser)
   async me(@GqlUserId() userId: string, @Context() ctx) {
@@ -47,6 +53,15 @@ export class UserUserResolver {
         id: userId,
       }),
     );
+    return 'ok';
+  }
+
+  @Mutation(() => String)
+  async send_position(
+    @GqlUserId() userId: string,
+    @Args('dto') dto: SendPositionDto,
+  ) {
+    await this.positionService.save(userId, dto);
     return 'ok';
   }
 

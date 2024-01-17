@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Param, Post, Req, Res } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Req,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { UserRegisterCommand } from '../application/command/user.register/user.register.command';
 import { generateString } from '@nestjs/typeorm';
@@ -15,8 +24,10 @@ import { SendMessageCommand } from '../application/command/send.message/send.mes
 import { MeQuery } from '../application/query/me/me.query';
 import { Context, Subscription } from '@nestjs/graphql';
 import { UserUser } from './user/user.schema';
+import { SkipThrottle, ThrottlerGuard } from '@nestjs/throttler';
 
 @Controller('auth')
+@SkipThrottle()
 export class AuthController {
   constructor(
     private commandBus: CommandBus,

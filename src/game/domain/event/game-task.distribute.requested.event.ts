@@ -1,5 +1,6 @@
 export class GameTaskDistributeRequestedEvent {
   id: string;
+  teamId: string
   instanceId: string;
   strategy: string;
 

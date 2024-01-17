@@ -38,19 +38,19 @@ export class DummyUseCases {
 
   async createGame() {
     this.logger.debug('creating  start');
-    await this.commandBus.execute(
-      new GameCreateCommand({
-        id: generateString(),
-        name: `dummy_${generateString()}`,
-        hidden: false,
-        description: 'test',
-        logoUrl: 'test',
-        duration: 10,
-        taskStrategy: 'DEFAULT',
-        cost: 0,
-        rules: 'test',
-        personLimit: 10,
-      }),
-    );
+    // await this.commandBus.execute(
+    //   new GameCreateCommand({
+    //     id: generateString(),
+    //     name: `dummy_${generateString()}`,
+    //     hidden: false,
+    //     description: 'test',
+    //     // logoUrl: 'test',
+    //     duration: 10,
+    //     taskStrategy: 'DEFAULT',
+    //     cost: 0,
+    //     rules: 'test',
+    //     personLimit: 10,
+    //   }),
+    // );
   }
 }

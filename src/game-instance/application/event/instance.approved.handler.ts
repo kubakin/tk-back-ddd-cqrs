@@ -3,7 +3,7 @@ import { Inject } from '@nestjs/common';
 import { GameInstanceRepository } from '../../domain/game-instance.repository';
 import { GameRepository } from '../../../game/domain/game.repository';
 import { GameInstanceApprovedEvent } from '../../domain/event/game-instance.approved.event';
-import { InjectionToken } from '../../../game-instance/application/injection.token';
+import { InjectionToken } from '../injection.token';
 import { InjectionToken as GameInjectionToken } from '../../../game/application/injection.token';
 import { InjectionToken as TaskInjectionToken } from '../../../task/application/injection.token';
 import { InjectionToken as TaskInstanceInjectionToken } from '../../../task-instance/application/injection.token';

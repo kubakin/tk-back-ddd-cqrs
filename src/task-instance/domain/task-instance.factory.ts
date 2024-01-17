@@ -20,7 +20,7 @@ export class TaskInstanceFactory {
       taskId: options.taskId,
       order: options.order,
       startedAt: null,
-      status: 'CREATED',
+      status: 'Created',
       createdAt: new Date(),
       answeredBy: null,
       answeredAt: null,

@@ -11,8 +11,13 @@ import { GameUpdateHandler } from './application/command/game.update/game.update
 import { UserGameResolver } from './api/user/game.resolver';
 import { RepoProvider } from '../common/repo.provider';
 import { AdminGameResolver } from './api/admin/game.resolver';
+import { GameInstanceApprovedHandler } from './application/event/game-instance.approved.handler';
 
-const application = [GameCreateHandler, GameUpdateHandler];
+const application = [
+  GameCreateHandler,
+  GameUpdateHandler,
+  GameInstanceApprovedHandler,
+];
 
 const infrastructure = [
   {

@@ -15,7 +15,6 @@ export class GameRepositoryImplements implements GameRepository {
     // console.log(generateString());
     const entity: GameEntity = {
       id: "0faea960-0684-47ae-950d-d5d354950c14",
-      logoUrl: null,
       plannedAt: new Date(),
       rules: null,
       description: "Test Game",

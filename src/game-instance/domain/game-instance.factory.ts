@@ -20,7 +20,7 @@ export class GameInstanceFactory {
       score: 0,
       createdAt: new Date(),
       updatedAt: new Date(),
-      status: 'CREATED',
+      status: 'Created',
     });
   }
 

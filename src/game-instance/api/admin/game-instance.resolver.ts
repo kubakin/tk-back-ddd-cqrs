@@ -18,10 +18,18 @@ import { AdminGameInstanceQuery } from './game-instance.input';
 import { AdminTeam } from 'src/team/api/admin/team.schema';
 import { AdminGame } from 'src/game/api/admin/game.schema';
 import { AdminTaskInstance } from 'src/task-instance/api/admin/task-instance.schema';
+import { CommandBus } from '@nestjs/cqrs';
+import { RejectGameCommand } from 'src/game-instance/application/command/reject.game/reject.game.command';
+import { ApproveGameCommand } from 'src/game-instance/application/command/approve.game/approve.game.command';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Resolver(() => AdminGameInstance)
+@SkipThrottle()
 export class AdminGameInstanceResolver {
-  constructor(private provider: RepoProvider) {}
+  constructor(
+    private provider: RepoProvider,
+    private commandBus: CommandBus,
+  ) {}
 
   @Query(() => [AdminGameInstance])
   async admin_game_instance_list(@Args('dto') dto: AdminGameInstanceQuery) {
@@ -39,6 +47,7 @@ export class AdminGameInstanceResolver {
   async game(@Parent() instance: AdminGameInstance) {
     return await this.provider.gameRepository.findOne({
       where: { id: instance.gameId },
+      order: { createdAt: 'ASC' },
     });
   }
 
@@ -46,17 +55,32 @@ export class AdminGameInstanceResolver {
   async taskInstances(@Parent() instance: AdminGameInstance) {
     return await this.provider.taskInstanceRepository.find({
       where: { gameInstanceId: instance.id },
+      order: { order: 'ASC' },
     });
   }
 
-  @Mutation(()=> String)
-  async appove_game_instance() {
-    return 'ok'
+  @Mutation(() => String)
+  async appove_game_instance(@Args('id') id: string) {
+    await this.commandBus.execute(
+      new ApproveGameCommand({ gameInstanceId: id }),
+    );
+    return 'ok';
   }
 
-  @Mutation(()=> String)
-  async reject_game_instance() {
-    return 'ok'
+  @Mutation(() => String)
+  async reject_game_instance(@Args('id') id: string) {
+    await this.commandBus.execute(
+      new RejectGameCommand({ gameInstanceId: id }),
+    );
+    return 'ok';
+  }
+
+  @Mutation(() => String)
+  async release_game_instance(@Args('id') id: string) {
+    await this.commandBus.execute(
+      new RejectGameCommand({ gameInstanceId: id }),
+    );
+    return 'ok';
   }
 
   // @Subscription(() => AdminGameInstance)

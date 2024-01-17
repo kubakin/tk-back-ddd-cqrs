@@ -5,8 +5,9 @@ import { AuthorizationOnlyModule } from '../../lib/authorization/src';
 import { AttemptSendedHandler } from './application/event/attempt.sended.handler';
 import { AttemptRepositoryImplements } from './infrastructure/attempt.repository.implements';
 import { AttemptFactory } from './domain/attempt.factory';
+import { AttemptValidatedHandler } from './application/event/attempt.validated.handler';
 
-const application = [AttemptSendedHandler];
+const application = [AttemptSendedHandler, AttemptValidatedHandler];
 
 const infrastructure = [
   {

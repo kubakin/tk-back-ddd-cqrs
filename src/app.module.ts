@@ -13,11 +13,23 @@ import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { PubSub } from 'graphql-subscriptions';
 import { ScheduleModule } from '@nestjs/schedule';
 import { ApolloServerPluginLandingPageLocalDefault } from '@apollo/server/plugin/landingPage/default';
-
+import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
+import { APP_GUARD } from '@nestjs/core';
+import { GqlThrottlerGuard } from './common/guards/gql.throttler';
+import { AuthorizationOnlyModule } from 'lib/authorization/src';
+import { JwtService } from '@nestjs/jwt';
+import { GqlWsUserGuard } from 'lib/authorization/src/gql.user.guard';
 export const pubSub = new PubSub();
 
 @Module({
   imports: [
+    AuthorizationOnlyModule,
+    ThrottlerModule.forRoot([
+      {
+        ttl: 20000,
+        limit: 20,
+      },
+    ]),
     ScheduleModule.forRoot(),
     AppGenericModule.forRoot(),
     UserModule,
@@ -28,23 +40,59 @@ export const pubSub = new PubSub();
     TestModule,
     ChatModule,
     AdminModule,
-    GraphQLModule.forRoot<ApolloDriverConfig>({
+    GraphQLModule.forRootAsync({
       driver: ApolloDriver,
-      autoSchemaFile: true,
-      playground: false,
-      context: (ctx) => {
-        ctx.pubSub = pubSub;
-      },
-      introspection: true,
-      plugins: [ApolloServerPluginLandingPageLocalDefault()],
-      subscriptions: {
-        'graphql-ws': {
-          path: '/sub',
-        },
+      inject: [GqlWsUserGuard],
+      useFactory: (guard: GqlWsUserGuard) => {
+        return {
+          autoSchemaFile: true,
+          playground: false,
+          context: ({ req, res }) => {
+            return { req, res, pubSub };
+          },
+          introspection: true,
+          plugins: [ApolloServerPluginLandingPageLocalDefault()],
+          subscriptions: {
+            'graphql-ws': {
+              onSubscribe(ctx, message) {
+                const user = guard.decodeUser(ctx.connectionParams?.headers);
+                ctx.extra.user = user;
+                const additional = ctx.connectionParams?.headers || {};
+                Object.assign(ctx.extra['request'].headers, additional);
+              },
+              path: '/sub',
+            },
+          },
+        };
       },
     }),
+    // GraphQLModule.forRoot<ApolloDriverConfig>({
+    //   driver: ApolloDriver,
+    //   autoSchemaFile: true,
+    //   playground: false,
+    //   context: ({ req, res }) => {
+    //     return { req, res, pubSub };
+    //   },
+    //   introspection: true,
+    //   plugins: [ApolloServerPluginLandingPageLocalDefault()],
+    //   subscriptions: {
+    //     'graphql-ws': {
+    //       onSubscribe(ctx, message) {
+    //         const additional = ctx.connectionParams?.headers || {};
+    //         Object.assign(ctx.extra['request'].headers, additional);
+    //         // console.log(ctx.extra['request'].headers);
+    //       },
+    //       path: '/sub',
+    //     },
+    //   },
+    // }),
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: GqlThrottlerGuard,
+    },
+  ],
 })
 export class AppModule {}

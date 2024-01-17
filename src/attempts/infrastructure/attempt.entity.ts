@@ -7,4 +7,5 @@ export class AttemptEntity {
   teamId: string;
   createdAt: Date;
   status: string;
+  userId: string;
 }

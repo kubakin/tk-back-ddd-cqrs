@@ -52,12 +52,12 @@ export class AdminTaskResolver {
     @Args('id') id: string,
     @Args('dto') dto: CreateUpdateTaskDto,
   ) {
-    // await this.commandBus.execute(
-    //   new TaskCreateCommand({
-    //     id,
-    //     ...dto,
-    //   }),
-    // );
+    await this.commandBus.execute(
+      new TaskCreateCommand({
+        id,
+        ...dto,
+      }),
+    );
     return 'ok';
   }
 

@@ -5,18 +5,19 @@ import { Logger } from '@nestjs/common';
 export type GameRequiredOptions = {
   id: string;
   name: string;
-  taskStrategy: string;
-  duration: number;
-};
-
-export type GameOptionalOptions = {
   description: string;
   hidden: boolean;
-  rules: string;
-  logoUrl: string;
-  personLimit: number;
   cost: number;
+  rules: string;
+  personLimit: number;
+  duration: number;
+  taskStrategy: string;
+  autoStart: boolean;
+  autoEnd: boolean;
+  plannedAt: Date;
 };
+
+export type GameOptionalOptions = {};
 
 export type GameOptions = Required<GameRequiredOptions> &
   Partial<GameOptionalOptions>;
@@ -29,7 +30,7 @@ export interface GameParams {
 export interface Game extends GameParams {
   isFree: boolean;
   startImmediate: boolean;
-  distribute: (instanceId: string) => void;
+  distribute: (instanceId: string, teamId: string) => void;
   commit: () => void;
   update: (data: Partial<GameDomain>) => void;
 }
@@ -48,12 +49,13 @@ export class GameDomain extends BaseDomain implements Game {
   duration: number;
   description: string;
 
-  distribute(instanceId: string) {
+  distribute(instanceId: string, teamId: string) {
     this.logger.debug(`Start destributing tasks`);
     this.apply(
       new GameTaskDistributeRequestedEvent({
         id: this.id,
         instanceId,
+        teamId,
         strategy: this.taskStrategy,
       }),
     );

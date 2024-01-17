@@ -13,8 +13,30 @@ import { GameInstanceListHandler } from './application/query/game.instance.list/
 import { UserGameInstanceResolver } from './api/user/game-instance.resolver';
 import { RepoProvider } from '../common/repo.provider';
 import { AdminGameInstanceResolver } from './api/admin/game-instance.resolver';
+import { TasksDistributedHandler } from './application/event/tasks.distributed.handler';
+import { ChangeGameInstanceTaskHandler } from './application/event/instance.task.changed.handler 2';
+import { GameFinisherSaga } from './application/saga/game.finisher/game.finisher.saga';
+import { FinishInstanceHandler } from './application/command/finish.instance/finish.instance.handler';
+import { ChangeScoreHandler } from './application/command/change.score/change.score.handler';
+import { ScoreChangerSaga } from './application/saga/score.changer/score.changer.saga';
+import { GameInstanceUpdatedHandler } from './api/handlers/game-instance.updated.handler';
+import { RejectGameHandler } from './application/command/reject.game/reject.game.handler';
+import { ApproveGameHandler } from './application/command/approve.game/approve.game.handler';
+import { ReleaseGameHandler } from './application/command/release.game/release.game.handler';
 
-const application = [TeamJoinRequestedHandler, GameInstanceListHandler];
+const application = [
+  TeamJoinRequestedHandler,
+  GameInstanceListHandler,
+  TasksDistributedHandler,
+  ChangeGameInstanceTaskHandler,
+  GameFinisherSaga,
+  FinishInstanceHandler,
+  ChangeScoreHandler,
+  ScoreChangerSaga,
+  RejectGameHandler,
+  ApproveGameHandler,
+  ReleaseGameHandler,
+];
 
 const infrastructure = [
   {
@@ -25,6 +47,7 @@ const infrastructure = [
     provide: InjectionToken.GameInstanceQuery,
     useClass: GameInstanceQueryImplements,
   },
+  GameInstanceUpdatedHandler,
 ];
 
 const resolvers = [UserGameInstanceResolver, AdminGameInstanceResolver];

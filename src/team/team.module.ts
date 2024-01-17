@@ -18,6 +18,7 @@ import { AppResolver } from '../app.resolver';
 import { GameSessionCreated } from './application/event/game.session.created.handler';
 import { TeamUpdatedHandler } from './api/handlers/team.updated.handler';
 import { AdminTeamResolver } from './api/admin/team.resolver';
+import { GameSessionDeleted } from './application/event/game.session.deleted.handler';
 
 const application = [
   TeamCreateHandler,
@@ -26,6 +27,7 @@ const application = [
   TeamStartGameHandler,
   TeamChangeSessionHandler,
   GameSessionCreated,
+  GameSessionDeleted,
   TeamUpdatedHandler,
 ];
 

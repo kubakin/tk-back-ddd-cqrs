@@ -15,13 +15,15 @@ export class AttemptCreatedHandler implements IEventHandler<AttemptCreated> {
 
   async handle(event: AttemptCreated): Promise<void> {
     const taskInstance = await this.repository.findById(event.taskInstanceId);
-    const task = await this.taskRepository.findTaskByInstanceThatNeedBeAnswered(
-      taskInstance,
-    );
+    const task =
+      await this.taskRepository.findTaskByInstanceThatNeedBeAnswered(
+        taskInstance,
+      );
     if (!task) {
       return;
     }
-    task.validate(event.id, event.taskInstanceId, event.data);
-    task.commit();
+    task.validate(event.id, event.data);
+    task.commit()
+   
   }
 }

@@ -2,28 +2,26 @@ import { Field, InputType } from '@nestjs/graphql';
 
 @InputType()
 export class CreateUpdateGameDto {
-  @Field({ nullable: true })
+  @Field()
   name: string;
   @Field()
   description: string;
-  @Field({ nullable: true, defaultValue: 0 })
+  @Field()
+  hidden: boolean;
+  @Field()
   cost: number;
   @Field()
   rules: string;
-  @Field({ nullable: true })
-  logoUrl: string;
-  @Field({ nullable: true, defaultValue: 0 })
+  @Field()
   personLimit: number;
-  @Field({ nullable: true, defaultValue: 0 })
+  @Field()
   duration: number;
-  @Field({ nullable: true, defaultValue: 'DEFAULT' })
+  @Field()
   taskStrategy: string;
-  @Field({ nullable: true, defaultValue: true })
+  @Field()
   autoStart: boolean;
-  @Field({ nullable: true, defaultValue: true })
+  @Field()
   autoEnd: boolean;
   @Field({ nullable: true })
   plannedAt: Date;
-  @Field({ defaultValue: false, nullable: true })
-  hidden: boolean;
 }

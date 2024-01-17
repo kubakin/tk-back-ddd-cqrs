@@ -1,8 +1,10 @@
 import { AggregateRoot } from '@nestjs/cqrs';
 import { HasId } from '../../common/interfaces/has-id.interface';
 import { TaskAnswerType } from './types/task-answer.type';
-import { AttemptSucceed } from './event/attempt.succeed';
-import { AttemptFailed } from './event/attempt.failed';
+import { AttemptSucceed } from '../../attempts/domain/event/attempt.succeed';
+import { AttemptFailed } from '../../attempts/domain/event/attempt.failed';
+import { NotImplementedException } from '@nestjs/common';
+import { AttemptValidated } from './event/attempt.validated';
 
 export type TaskRequiredOptions = {
   id: string;
@@ -13,6 +15,7 @@ export type TaskRequiredOptions = {
   cost: number;
   penalty: number;
   name: string;
+  type: string;
 };
 
 export interface HasTaskId {
@@ -31,11 +34,7 @@ export type TeamOptions = Required<TaskRequiredOptions> &
   Partial<TaskOptionalOptions>;
 
 export interface Task extends HasId, TaskParams {
-  validate: (
-    attemptId: string,
-    instanceId: string,
-    data: TaskAnswerType,
-  ) => void;
+  validate: (attemptId: string, data: TaskAnswerType) => void;
   commit: () => void;
 }
 
@@ -48,24 +47,29 @@ export class TaskDomain extends AggregateRoot implements Task {
 
   answerIsValid() {}
 
-  validate(attemptId: string, instanceId: string, data: TaskAnswerType) {
-    // if (this.possibleAnswers.includes(data)) {
-    //   this.apply(
-    //     new AttemptSucceed({
-    //       attemptId,
-    //       taskInstanceId: instanceId,
-    //       scoreChange: this.cost,
-    //     }),
-    //   );
-    // } else {
-    //   this.apply(
-    //     new AttemptFailed({
-    //       attemptId,
-    //       taskInstanceId: instanceId,
-    //       scoreChange: this.penalty,
-    //     }),
-    //   );
-    // }
+  validate(attemptId: string, data: TaskAnswerType) {
+    try {
+      this.__validate(data);
+      this.apply(
+        new AttemptValidated({
+          result: true,
+          attemptId,
+          scoreChange: this.cost,
+        }),
+      );
+    } catch (e) {
+      this.apply(
+        new AttemptValidated({
+          result: false,
+          attemptId,
+          scoreChange: -this.penalty,
+        }),
+      );
+    }
+  }
+
+  __validate(data: unknown) {
+    throw new NotImplementedException();
   }
 
   sendResponse() {}

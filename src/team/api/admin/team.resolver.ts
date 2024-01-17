@@ -33,6 +33,11 @@ export class AdminTeamResolver {
     });
   }
 
+  @Query(() => AdminTeam)
+  async team_admin(@Args('id') id: string) {
+    return await this.provider.teamRepository.findOne({ where: { id } });
+  }
+
   @ResolveField(() => AdminUser)
   async admin(@Parent() team: AdminTeam) {
     return await this.provider.userRepository.findOne({

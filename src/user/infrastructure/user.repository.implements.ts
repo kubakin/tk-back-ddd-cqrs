@@ -36,6 +36,7 @@ export class UserRepositoryImplements
 
   async provideById(id: string): Promise<AuthData> {
     const entity = await this.repository.findOneBy({ id });
+    if (!entity) return null;
     return {
       id: entity.id,
       isAdmin: false,
@@ -45,6 +46,7 @@ export class UserRepositoryImplements
 
   async provideByPhone(phone: string): Promise<AuthData> {
     const entity = await this.repository.findOneBy({ phone });
+    if (!entity) return null;
     return {
       id: entity.id,
       isAdmin: false,
@@ -54,6 +56,7 @@ export class UserRepositoryImplements
 
   async findById(id: string) {
     const entity = await this.repository.findOne({ where: { id } });
+    if (!entity) return null;
     return this.entityToModel(entity);
   }
 

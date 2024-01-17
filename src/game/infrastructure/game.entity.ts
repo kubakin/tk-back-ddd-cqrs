@@ -15,8 +15,6 @@ export class GameEntity extends BaseEntity {
   cost: number;
   @Column({ nullable: true })
   rules: string;
-  @Column({ nullable: true })
-  logoUrl: string;
   @Column()
   personLimit: number;
   @Column()
@@ -27,6 +25,6 @@ export class GameEntity extends BaseEntity {
   autoStart: boolean;
   @Column({ default: true })
   autoEnd: boolean;
-  @Column({ default: new Date() })
+  @Column({ default: new Date(), nullable: true })
   plannedAt: Date;
 }

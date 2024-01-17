@@ -16,6 +16,8 @@ export class TaskEntity {
   answer: any;
   @Column()
   gameId: string;
+  @Column('simple-json', { nullable: true })
+  body: any;
   @Column()
   cost: number;
   @Column()

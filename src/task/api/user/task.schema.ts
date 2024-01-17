@@ -14,6 +14,8 @@ export class UserTask {
   @Field()
   gameId: string;
   @Field()
+  description: string;
+  @Field()
   cost: number;
   @Field()
   penalty: number;

@@ -11,6 +11,7 @@ interface CreateTaskOption {
   cost: number;
   penalty: number;
   name: string;
+  type: string;
 }
 
 @Injectable()
@@ -27,6 +28,7 @@ export class TaskFactory {
       cost: options.cost,
       penalty: options.penalty,
       name: options.name,
+      type:  options.type,
     });
   }
 
