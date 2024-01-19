@@ -66,6 +66,7 @@ export class AttemptDomain extends AggregateRoot implements Attempt {
         attemptId: this.id,
         taskInstanceId: this.taskInstanceId,
         scoreChange,
+        teamId: this.teamId,
       }),
     );
   }

@@ -1,11 +1,12 @@
+import { ETaskType } from "src/task/domain/enum/task.types";
+
 export class TaskCreateCommand {
   id: string;
   name: string
   answer: any
-  type: string
+  type: ETaskType
   description: string;
   gameId: string;
-  defaultOrder: number;
   cost: number;
   penalty: number;
 

@@ -5,6 +5,7 @@ import { AttemptSucceed } from '../../attempts/domain/event/attempt.succeed';
 import { AttemptFailed } from '../../attempts/domain/event/attempt.failed';
 import { NotImplementedException } from '@nestjs/common';
 import { AttemptValidated } from './event/attempt.validated';
+import { ETaskType } from './enum/task.types';
 
 export type TaskRequiredOptions = {
   id: string;
@@ -15,7 +16,7 @@ export type TaskRequiredOptions = {
   cost: number;
   penalty: number;
   name: string;
-  type: string;
+  type: ETaskType;
 };
 
 export interface HasTaskId {
@@ -44,6 +45,8 @@ export class TaskDomain extends AggregateRoot implements Task {
   defaultOrder: number;
   penalty: number;
   cost: number;
+  type: ETaskType;
+  answer: any;
 
   answerIsValid() {}
 

@@ -6,4 +6,5 @@ export class AttemptFailed {
   taskInstanceId: string;
   attemptId: string;
   scoreChange: number;
+  teamId: string;
 }

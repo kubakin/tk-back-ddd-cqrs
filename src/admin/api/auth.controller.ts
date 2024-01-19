@@ -3,6 +3,7 @@ import { CommandBus, QueryBus } from '@nestjs/cqrs';
 import { AuthService } from '../../../lib/authorization/src/api/auth.service';
 // import { Request, Response } from 'express';
 import { AdminLoginDto } from './dto/admin.login.dto';
+import { SkipThrottle } from '@nestjs/throttler';
 
 @Controller('admin')
 export class AuthContoller {
@@ -13,6 +14,7 @@ export class AuthContoller {
   ) {}
 
   @Post('login')
+  @SkipThrottle()
   async login(
     @Res({ passthrough: true }) response: any,
     @Req() request: any,

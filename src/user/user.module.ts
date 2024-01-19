@@ -25,6 +25,7 @@ import { UserUpdatedHandler } from './api/handlers/user.updated.handler';
 import { AdminUserResolver } from './api/admin/user.resolver';
 import { PositionModule } from 'src/position/position.module';
 import { UserUserSubResolver } from './api/user/user-sub.resolver';
+import { SendAttemptHandler } from './application/command/send.attempt/send.attempt.handler';
 
 const application = [
   UserRegisterHandler,
@@ -37,6 +38,7 @@ const application = [
   MeHandler,
   AddLeaderToTeamHandler,
   UserUpdatedHandler,
+  SendAttemptHandler,
 ];
 
 const resolvers = [UserUserResolver, AdminUserResolver, UserUserSubResolver];

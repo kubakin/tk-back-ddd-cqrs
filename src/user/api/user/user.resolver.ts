@@ -28,6 +28,7 @@ import {
   GqlWsUserGuard,
 } from 'lib/authorization/src/gql.user.guard';
 import { UseGuards } from '@nestjs/common';
+import { SendAttemptCommand } from 'src/user/application/command/send.attempt/send.attempt.command';
 
 @Resolver(() => UserUser)
 @GqlUserGuard()
@@ -37,7 +38,6 @@ export class UserUserResolver {
     private commandBus: CommandBus,
     private positionService: PositionService,
   ) {}
-
 
   @Query(() => UserUser)
   async me(@GqlUserId() userId: string, @Context() ctx) {
@@ -77,10 +77,18 @@ export class UserUserResolver {
   }
 
   @Mutation(() => String)
+  @SkipThrottle()
   async sendAttempt(
     @GqlUserId() userId: string,
     @Args('dto') dto: SendAttemptDto,
   ) {
+    await this.commandBus.execute(
+      new SendAttemptCommand({
+        userId,
+        taskInstanceId: dto.taskInstanceId,
+        answer: dto.answer,
+      }),
+    );
     return 'ok';
   }
 

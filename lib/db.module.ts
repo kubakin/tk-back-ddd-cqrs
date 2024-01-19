@@ -23,6 +23,7 @@ import { TaskEntity } from '../src/task/infrastructure/task.entity';
 import { TaskInstanceEntity } from '../src/task-instance/infrastructure/task-instance.entity';
 import { MessageEntity } from '../src/chat/infrastructure/message.entity';
 import { AdminEntity } from '../src/admin/infrastructure/admin.entity';
+import { AttemptEntity } from 'src/attempts/infrastructure/attempt.entity';
 
 interface WriteConnection {
   readonly startTransaction: (
@@ -70,6 +71,7 @@ class DatabaseService implements OnApplicationBootstrap, OnModuleDestroy {
         TaskInstanceEntity,
         MessageEntity,
         AdminEntity,
+        AttemptEntity,
       ],
       migrations: ['migrations/tk/*{.ts,.js}'],
       migrationsTableName: 'tk_migrations',

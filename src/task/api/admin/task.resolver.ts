@@ -13,9 +13,12 @@ import { generateString } from '@nestjs/typeorm';
 import { GameUpdateCommand } from 'src/game/application/command/game.update/game.update.command';
 import { AdminTask } from './task.schema';
 import { TaskCreateCommand } from 'src/task/application/command/task.create/task.create.command';
-import { CreateUpdateTaskDto } from './dto/create-update.task.dto';
+import { CreateTaskDto } from './dto/create.task.dto';
 import { AdminGame } from 'src/game/api/admin/game.schema';
 import { TaskInputDto } from './task.input';
+import { UpdateTaskDto } from './dto/update.task.dto';
+import { TaskDeleteCommand } from 'src/task/application/command/task.delete/task.delete.command';
+import { TaskUpdateCommand } from 'src/task/application/command/task.update/task.update.command';
 
 @Resolver(() => AdminTask)
 export class AdminTaskResolver {
@@ -26,7 +29,10 @@ export class AdminTaskResolver {
 
   @Query(() => [AdminTask])
   async admin_task_list(@Args('dto') dto: TaskInputDto) {
-    return await this.provider.taskRepository.find({ where: dto });
+    return await this.provider.taskRepository.find({
+      where: dto,
+      order: { defaultOrder: 'DESC' },
+    });
   }
 
   @ResolveField(() => AdminGame)
@@ -37,7 +43,7 @@ export class AdminTaskResolver {
   }
 
   @Mutation(() => String)
-  async create_task(@Args('dto') dto: CreateUpdateTaskDto) {
+  async create_task(@Args('dto') dto: CreateTaskDto) {
     await this.commandBus.execute(
       new TaskCreateCommand({
         id: generateString(),
@@ -48,12 +54,9 @@ export class AdminTaskResolver {
   }
 
   @Mutation(() => String)
-  async update_task(
-    @Args('id') id: string,
-    @Args('dto') dto: CreateUpdateTaskDto,
-  ) {
+  async update_task(@Args('id') id: string, @Args('dto') dto: UpdateTaskDto) {
     await this.commandBus.execute(
-      new TaskCreateCommand({
+      new TaskUpdateCommand({
         id,
         ...dto,
       }),
@@ -63,12 +66,11 @@ export class AdminTaskResolver {
 
   @Mutation(() => String)
   async delete_task(@Args('id') id: string) {
-    // await this.commandBus.execute(
-    //   new TaskCreateCommand({
-    //     id,
-    //     ...dto,
-    //   }),
-    // );
+    await this.commandBus.execute(
+      new TaskDeleteCommand({
+        id,
+      }),
+    );
     return 'ok';
   }
 }

@@ -19,6 +19,7 @@ import { GqlThrottlerGuard } from './common/guards/gql.throttler';
 import { AuthorizationOnlyModule } from 'lib/authorization/src';
 import { JwtService } from '@nestjs/jwt';
 import { GqlWsUserGuard } from 'lib/authorization/src/gql.user.guard';
+import { NotificationModule } from './notification/notification.module';
 export const pubSub = new PubSub();
 
 @Module({
@@ -39,6 +40,7 @@ export const pubSub = new PubSub();
     AttemptModule,
     TestModule,
     ChatModule,
+    NotificationModule,
     AdminModule,
     GraphQLModule.forRootAsync({
       driver: ApolloDriver,

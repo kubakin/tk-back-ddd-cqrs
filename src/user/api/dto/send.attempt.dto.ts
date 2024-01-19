@@ -6,5 +6,7 @@ import { GraphQLJSONObject } from 'graphql-scalars';
 @InputType()
 export class SendAttemptDto {
   @Field(() => GraphQLJSONObject)
-  data: any;
+  answer: any;
+  @Field()
+  taskInstanceId: string
 }

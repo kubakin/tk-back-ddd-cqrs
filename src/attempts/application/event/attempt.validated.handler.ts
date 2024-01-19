@@ -13,7 +13,7 @@ export class AttemptValidatedHandler
 {
   @Inject(InjectionToken.AttemptRepository) repository: AttemptRepository;
 
-  constructor(private factory: AttemptFactory) {}
+  constructor() {}
 
   async handle(event: AttemptValidated): Promise<void> {
     const attempt = await this.repository.findById(event.attemptId);

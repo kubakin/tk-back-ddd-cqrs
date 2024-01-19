@@ -74,7 +74,10 @@ export class TaskRepositoryImplements implements TaskRepository {
   async findTaskByInstanceThatNeedBeAnswered(
     instance: HasTaskId,
   ): Promise<Task> {
-    return null;
+    const entity = await this.repository.findOne({
+      where: { id: instance.taskId },
+    });
+    return this.entityToModel(entity);
   }
 
   async findAll() {

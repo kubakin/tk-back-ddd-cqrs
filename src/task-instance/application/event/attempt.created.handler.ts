@@ -23,7 +23,6 @@ export class AttemptCreatedHandler implements IEventHandler<AttemptCreated> {
       return;
     }
     task.validate(event.id, event.data);
-    task.commit()
-   
+    task.commit();
   }
 }

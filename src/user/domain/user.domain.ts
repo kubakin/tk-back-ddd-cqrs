@@ -26,6 +26,7 @@ export interface User {
   deleted: () => void;
   commit: () => void;
   sendMessage: (text: string) => void;
+  sendAttempt: (taskInstanceId: string, answer: unknown) => void;
 }
 
 export class UserDomain extends BaseDomain implements User {
@@ -55,6 +56,7 @@ export class UserDomain extends BaseDomain implements User {
   }
 
   sendAttempt(taskInstanceId: string, answer: unknown) {
+    this.logger.log(`${this.phone} sended ${JSON.stringify(answer)}`)
     this.apply(
       new SendAttemptRequestedEvent({
         teamId: this.teamId,

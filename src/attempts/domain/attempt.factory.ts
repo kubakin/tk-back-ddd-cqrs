@@ -8,7 +8,7 @@ interface CreateAttemptOption {
   taskInstanceId: string;
   teamId: string;
   data: TaskAnswerType;
-  userId: string
+  userId: string;
 }
 
 @Injectable()

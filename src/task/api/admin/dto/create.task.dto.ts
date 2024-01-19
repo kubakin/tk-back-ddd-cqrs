@@ -1,16 +1,15 @@
 import { Field, InputType } from '@nestjs/graphql';
 import { GraphQLJSONObject } from 'graphql-scalars';
+import { ETaskType } from 'src/task/domain/enum/task.types';
 
 @InputType()
-export class CreateUpdateTaskDto {
+export class CreateTaskDto {
   @Field()
   description: string;
   @Field()
   name: string;
-  @Field({ defaultValue: 0, nullable: true })
-  defaultOrder: number;
-  @Field()
-  type: string;
+  @Field(() => String)
+  type: ETaskType;
   @Field(() => GraphQLJSONObject)
   answer: any;
   @Field()
@@ -19,4 +18,6 @@ export class CreateUpdateTaskDto {
   cost: number;
   @Field()
   penalty: number;
+  @Field(() => GraphQLJSONObject, { nullable: true })
+  body: any;
 }

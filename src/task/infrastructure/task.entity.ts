@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { ETaskType } from '../domain/enum/task.types';
 
 @Entity()
 export class TaskEntity {
@@ -10,8 +11,8 @@ export class TaskEntity {
   name: string;
   @Column({ default: 0 })
   defaultOrder: number;
-  @Column({ default: 'default' })
-  type: string;
+  @Column('varchar', { default: 'default' })
+  type: ETaskType;
   @Column('json', { default: {} })
   answer: any;
   @Column()
