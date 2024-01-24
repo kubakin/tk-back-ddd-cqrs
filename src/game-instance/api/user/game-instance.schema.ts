@@ -11,9 +11,9 @@ export class UserGameInstance {
   teamId: string;
   @Field()
   status: string;
-  @Field({nullable: true})
+  @Field({ nullable: true })
   totalTasks: number;
-  @Field({nullable: true})
+  @Field({ nullable: true })
   progressTasks: number;
   @Field()
   createdAt: Date;
@@ -27,6 +27,10 @@ export class UserGameInstance {
   team: UserTeam;
   @Field(() => UserTaskInstance, { nullable: true })
   currentTask: UserTaskInstance;
-  @Field({nullable: true})
+  @Field({ nullable: true })
   currentTaskId: string;
+  @Field({ nullable: true })
+  endAt: Date;
+  @Field({ nullable: true })
+  startedAt: Date;
 }

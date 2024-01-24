@@ -20,6 +20,8 @@ export type GameInstanceOptionalOptions = {
   score: number;
   status: string;
   currentTaskId: string;
+  endAt: Date;
+  startedAt: Date;
 };
 
 export type GameInstanceOptions = Required<GameInstanceRequiredOptions> &
@@ -28,7 +30,7 @@ export type GameInstanceOptions = Required<GameInstanceRequiredOptions> &
 export interface GameInstance {
   approve: () => void;
   delete: () => void;
-  start: () => void;
+  start: (duration?: number) => void;
   release: () => void;
   commit: () => void;
   created: () => void;
@@ -44,6 +46,8 @@ export class GameInstanceDomain extends BaseDomain implements GameInstance {
   score: number;
   status: GameInstanceStatus;
   currentTaskId: string;
+  endAt: Date;
+  startedAt: Date;
 
   changeScore(change: number) {
     this.score = this.score + change;
@@ -78,8 +82,14 @@ export class GameInstanceDomain extends BaseDomain implements GameInstance {
     this.status = GameInstanceStatusEnum.Released;
   }
 
-  start() {
+  start(duration?: number) {
     this.status = GameInstanceStatusEnum.Started;
+    this.startedAt = new Date()
+    if (duration) {
+      const date = new Date()
+      date.setMinutes(duration);
+      this.endAt = date;
+    }
     this.logger.debug(`Session ${this.id} started`);
     this.apply(
       new GameInstanceStartedEvent({

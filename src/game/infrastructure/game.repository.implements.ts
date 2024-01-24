@@ -10,27 +10,7 @@ export class GameRepositoryImplements implements GameRepository {
   constructor(private gameFactory: GameFactory) {
   }
 
-  async onApplicationBootstrap() {
-    return;
-    // console.log(generateString());
-    const entity: GameEntity = {
-      id: "0faea960-0684-47ae-950d-d5d354950c14",
-      plannedAt: new Date(),
-      rules: null,
-      description: "Test Game",
-      duration: 0,
-      hidden: false,
-      autoEnd: true,
-      autoStart: true,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-      cost: 0,
-      personLimit: 0,
-      taskStrategy: "DEFAULT",
-      name: "Test Game"
-    };
-    await this.repository.save(entity);
-  }
+
 
   async save(game: Game) {
     const models = [game];

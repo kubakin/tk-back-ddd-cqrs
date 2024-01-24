@@ -1,5 +1,5 @@
 export class TeamChangeSessionCommand {
-  gameInstanceId: string;
+  gameInstanceId?: string;
   userId: string;
 
   constructor(data: TeamChangeSessionCommand) {

@@ -1,5 +1,5 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
-import { BaseEntity } from "../../common/base/base.entity";
+import { Column, Entity, PrimaryColumn } from 'typeorm';
+import { BaseEntity } from '../../common/base/base.entity';
 
 @Entity()
 export class GameEntity extends BaseEntity {
@@ -25,6 +25,8 @@ export class GameEntity extends BaseEntity {
   autoStart: boolean;
   @Column({ default: true })
   autoEnd: boolean;
-  @Column({ default: new Date(), nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   plannedAt: Date;
+  @Column({ nullable: true })
+  finalText: string;
 }

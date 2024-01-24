@@ -17,7 +17,9 @@ export type GameRequiredOptions = {
   plannedAt: Date;
 };
 
-export type GameOptionalOptions = {};
+export type GameOptionalOptions = {
+  finalText: string
+};
 
 export type GameOptions = Required<GameRequiredOptions> &
   Partial<GameOptionalOptions>;
@@ -28,6 +30,7 @@ export interface GameParams {
 }
 
 export interface Game extends GameParams {
+  duration: number;
   isFree: boolean;
   startImmediate: boolean;
   distribute: (instanceId: string, teamId: string) => void;
@@ -44,6 +47,7 @@ export class GameDomain extends BaseDomain implements Game {
   taskStrategy: string;
   cost: number;
   rules: string;
+  finalText: string
   logoUrl: string;
   personLimit: number;
   duration: number;

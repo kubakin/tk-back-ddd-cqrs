@@ -6,4 +6,6 @@ import { AdminTask } from 'src/task/api/admin/task.schema';
 export class AdminGame extends UserGame {
   @Field(() => [AdminTask])
   tasks: AdminTask[];
+  @Field()
+  hidden: boolean;
 }

@@ -66,11 +66,11 @@ export class UserUserResolver {
   }
 
   @Mutation(() => String)
-  async join(@GqlUserId() userId: string) {
+  async join(@GqlUserId() userId: string, @Args('teamId') teamId: string) {
     await this.commandBus.execute(
       new UserJoinCommand({
         id: userId,
-        teamId: generateString(),
+        teamId,
       }),
     );
     return 'ok';

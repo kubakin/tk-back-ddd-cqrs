@@ -28,7 +28,7 @@ export interface Team extends HasId {
   created: () => void;
   deleted: () => void;
   commit: () => void;
-  changeCurrentSession: (instanceId: string) => void;
+  changeCurrentSession: (instanceId?: string) => void;
   createSessionRequest: (id: string, gameId: string) => void;
 }
 
@@ -73,7 +73,7 @@ export class TeamDomain extends BaseDomain implements Team {
     );
   }
 
-  changeCurrentSession(instanceId: string) {
+  changeCurrentSession(instanceId?: string) {
     this.currentSessionId = instanceId;
   }
 

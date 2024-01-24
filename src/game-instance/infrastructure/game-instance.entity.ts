@@ -7,6 +7,10 @@ export class GameInstanceEntity extends BaseEntity {
   id: string;
   @Column()
   gameId: string;
+  @Column({nullable: true})
+  endAt: Date;
+  @Column({nullable: true})
+  startedAt: Date;
   @Column()
   teamId: string;
   @Column({ default: 0 })

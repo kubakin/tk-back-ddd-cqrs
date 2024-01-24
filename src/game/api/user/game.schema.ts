@@ -1,4 +1,4 @@
-import { Field, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
 export class UserGame {
@@ -11,7 +11,9 @@ export class UserGame {
   @Field({ nullable: true })
   cost: number;
   @Field({ nullable: true })
-  rulesImgUrl: string;
+  rules: string;
+  @Field({ nullable: true })
+  finalText: string;
   @Field({ nullable: true })
   logoUrl: string;
   @Field({ nullable: true })
@@ -24,6 +26,6 @@ export class UserGame {
   autoStart: boolean;
   @Field({ nullable: true })
   autoEnd: boolean;
-  @Field({ nullable: true })
+  @Field({ nullable: true, defaultValue: null })
   plannedAt: Date;
 }

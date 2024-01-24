@@ -11,6 +11,7 @@ export class GameUpdateCommand {
   autoStart: boolean;
   autoEnd: boolean;
   plannedAt: Date;
+  finalText: string;
 
   constructor(data: GameUpdateCommand) {
     Object.assign(this, data);

@@ -29,11 +29,29 @@ export class UserTeamResolver {
   ) {}
 
   @Mutation(() => String)
-  async changeSession(@GqlUserId() userId: string, @Args('id') id: string) {
+  async changeSession(
+    @GqlUserId() userId: string,
+    @Args('id', { nullable: true }) id?: string,
+  ) {
+    console.log('hi');
     await this.commandBus.execute(
       new TeamChangeSessionCommand({
         userId,
         gameInstanceId: id,
+      }),
+    );
+    return 'ok';
+  }
+
+  @Mutation(() => String)
+  async closeSession(
+    @GqlUserId() userId: string,
+  ) {
+    console.log('hi');
+    await this.commandBus.execute(
+      new TeamChangeSessionCommand({
+        userId,
+        gameInstanceId: null,
       }),
     );
     return 'ok';

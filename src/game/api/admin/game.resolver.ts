@@ -29,7 +29,9 @@ export class AdminGameResolver {
 
   @Query(() => AdminGame)
   async admin_game(@Args('id') id: string) {
-    return await this.provider.gameRepository.findOne({ where: { id } });
+    const game = await this.provider.gameRepository.findOne({ where: { id } });
+    console.log(game);
+    return game;
   }
 
   @ResolveField(() => [AdminTask])

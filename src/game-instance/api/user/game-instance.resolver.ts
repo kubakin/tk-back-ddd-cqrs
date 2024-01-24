@@ -21,8 +21,11 @@ export class UserGameInstanceResolver {
 
   @Query(() => [UserGameInstance])
   async user_game_instance_list(@GqlUserId() userId: string) {
+    const user = await this.provider.userRepository.findOne({
+      where: { id: userId },
+    });
     const team = await this.provider.teamRepository.findOne({
-      where: { createdBy: userId },
+      where: { createdBy: userId, id: user.teamId },
       order: { createdAt: 'DESC' },
     });
     return await this.provider.gameInstanceRepository.find({

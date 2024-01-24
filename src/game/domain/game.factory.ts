@@ -15,6 +15,7 @@ interface CreateGameOptions {
   autoStart: boolean;
   autoEnd: boolean;
   plannedAt: Date;
+  finalText: string
 }
 
 @Injectable()

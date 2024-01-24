@@ -30,7 +30,7 @@ export class TasksDistributedHandler
     const gameInstance = await this.repository.findById(event.gameInstanceId);
     const game = await this.gameRepository.findById(event.gameId);
     if (game.startImmediate) {
-      gameInstance.start();
+      gameInstance.start(game.duration);
       await this.repository.save(gameInstance);
       gameInstance.commit();
     }
