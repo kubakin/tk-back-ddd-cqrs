@@ -63,7 +63,7 @@ export const pubSub = new PubSub();
                 const additional = ctx.connectionParams?.headers || {};
                 Object.assign(ctx.extra['request'].headers, additional);
               },
-              path: '/sub',
+              path: '/api/sub',
             },
           },
         };
