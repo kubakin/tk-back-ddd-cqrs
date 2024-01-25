@@ -47,6 +47,7 @@ export const pubSub = new PubSub();
       inject: [GqlWsUserGuard],
       useFactory: (guard: GqlWsUserGuard) => {
         return {
+          useGlobalPrefix: true,
           autoSchemaFile: true,
           playground: false,
           context: ({ req, res }) => {
