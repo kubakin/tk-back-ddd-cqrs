@@ -48,10 +48,10 @@ export const pubSub = new PubSub();
       useFactory: (guard: GqlWsUserGuard) => {
         return {
           useGlobalPrefix: true,
-          cors: {
-            credentials: true,
-            origin: true,
-          },
+          // cors: {
+          //   credentials: true,
+          //   origin: true,
+          // },
           autoSchemaFile: true,
           playground: false,
           context: ({ req, res }) => {
