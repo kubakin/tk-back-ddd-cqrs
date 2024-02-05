@@ -5,6 +5,7 @@ import { getRandomInt } from 'src/common/random-num';
 import { ETaskType } from './enum/task.types';
 import { QrTaskDomain } from './packages/qr/qr-task.domain';
 import { DefaultTaskDomain } from './packages/default/default-task.domain';
+import { GeoTaskDomain } from './packages/geo/geo-task.domain';
 
 interface CreateTaskOption {
   id: string;
@@ -38,6 +39,8 @@ export class TaskFactory {
   reconstitute(options: TeamOptions): Task {
     if (options.type === ETaskType.QR)
       return this.mapType(new QrTaskDomain(), options);
+    if (options.type === ETaskType.GEO)
+      return this.mapType(new GeoTaskDomain(), options);
     if (options.type === ETaskType.DEFAULT)
       return this.mapType(new DefaultTaskDomain(), options);
     return this.mapType(new TaskDomain(), options);

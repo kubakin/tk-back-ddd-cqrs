@@ -6,11 +6,16 @@ import { GameEntity } from '../game/infrastructure/game.entity';
 import { TaskEntity } from '../task/infrastructure/task.entity';
 import { TaskInstanceEntity } from '../task-instance/infrastructure/task-instance.entity';
 import { GameInstanceEntity } from '../game-instance/infrastructure/game-instance.entity';
+import { MessageEntity } from 'src/chat/infrastructure/message.entity';
 
 @Injectable()
 export class RepoProvider {
   get userRepository() {
     return readConnection.getRepository(UserEntity);
+  }
+
+  get messageRepository() {
+    return readConnection.getRepository(MessageEntity);
   }
 
   get teamRepository() {

@@ -93,7 +93,7 @@ export class UserUserResolver {
   }
 
   @Mutation(() => String)
-  async SendMessage(
+  async sendMessage(
     @GqlUserId() userId: string,
     @Args('message') message: string,
   ) {

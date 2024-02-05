@@ -30,8 +30,6 @@ export class UserQueryImplements implements UserQuery {
 
   async me(query: MeQuery): Promise<MeResult> {
     const rs = await this.userRepo.findOne({ where: { id: query.userId } });
-    console.log(rs);
-
     return {
       id: rs.id,
       phone: rs.phone,
